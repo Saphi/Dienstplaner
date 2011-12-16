@@ -1,0 +1,8 @@
+- SQL Datenbank erstellen 'dienstplaner'
+- SQL-Dump: Datei -> dienstplaner.sql über SQL-Fenster oder Import einspielen
+
+Konten:
+-------
+
+admin@dienstplaner.de   pw -> admin (Administrator)
+bert@mueller.de	  pw -> mueller (Mitarbeiter ohne Administratorrechte)	
