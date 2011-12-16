@@ -1,12 +1,10 @@
     	Softwareprojekt von<br><br>
-        Saphrina Berger, Sara K&ouml;hler,<br>
-        Claudia Band, Steffen Protze<br>
-        und Falko Sperling
+        Saphrina Berger und Sara K&ouml;hler
 	</div>
 	<br id="abschliessen">
 </div>
 <div id="fuss">
     <div id="fuss_text">
-        Bitte w&auml;hlen Sie einen Men&uuml;punkt.<br>        
+        Klasse, oder?<br>        
     </div>
 </div>
