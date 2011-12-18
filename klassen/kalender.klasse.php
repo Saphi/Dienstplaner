@@ -5,7 +5,7 @@ class Kalender
 	public $jahr;
 	public $monats_name = array( '01' => 'Januar',
 					      		 '02' => 'Februar',
-					      		 '03' => 'März',
+					      		 '03' => 'MÃ¤rz',
 					       		 '04' => 'April',
 					      	   	 '05' => 'Mai',
 					      		 '06' => 'Juni',
@@ -16,8 +16,8 @@ class Kalender
 							     '11' => 'November',
 					             '12' => 'Dezember' );
 	
-	/* setzt den Termin des Kalenders unter Berücksichtigung der führenden 0 beim Monat
-	 * Übergabeparameter: 	Monat
+	/* setzt den Termin des Kalenders unter Berï¿½cksichtigung der fï¿½hrenden 0 beim Monat
+	 * ï¿½bergabeparameter: 	Monat
 	 * 						Jahr
 	 */
 	public function setze_termin($monat, $jahr)
@@ -30,8 +30,8 @@ class Kalender
 		$this->jahr = $jahr;
 	}
 	
-	/* holt den Vormonat und das zugehörige Jahr unter Berücksichtigung des Jahressprung bei Januar
-	 * Rückgabewert:	Feld[2] -> Vormonat, zugehöriges Jahr
+	/* holt den Vormonat und das zugehï¿½rige Jahr unter Berï¿½cksichtigung des Jahressprung bei Januar
+	 * Rï¿½ckgabewert:	Feld[2] -> Vormonat, zugehï¿½riges Jahr
 	 */
 	public function hole_vor_monat()
 	{
@@ -45,8 +45,8 @@ class Kalender
 		}
 	}
 	
-	/* holt den Nachmonat und das zugehörige Jahr unter Berücksichtigung des Jahressprung bei Dezember
-	 * Rückgabewert:	Feld[2] -> Nachmonat, zugehöriges Jahr
+	/* holt den Nachmonat und das zugehï¿½rige Jahr unter Berï¿½cksichtigung des Jahressprung bei Dezember
+	 * Rï¿½ckgabewert:	Feld[2] -> Nachmonat, zugehï¿½riges Jahr
 	 */
 	function hole_nach_monat()
 	{
@@ -61,8 +61,8 @@ class Kalender
 	}
 	
 	/* Baut ein Feld[6][7] aus 6 Wochen mit jeweils 7 Tagen zusammen in dem die Monatstage gespeichert werden.
-	 * Freie Felder vorher werden mit den letzten Monatstagen des Vormonats gefüllt und nachfolgende freie Felder mit dem Begin der Monatstage des Folgemonats.
-	 * Rückgabewert:	Feld[6][7] -> Vormonatstage, Monatstage, Folgemonatstage
+	 * Freie Felder vorher werden mit den letzten Monatstagen des Vormonats gefï¿½llt und nachfolgende freie Felder mit dem Begin der Monatstage des Folgemonats.
+	 * Rï¿½ckgabewert:	Feld[6][7] -> Vormonatstage, Monatstage, Folgemonatstage
 	 */	
 	function hole_kalender()
 	{
