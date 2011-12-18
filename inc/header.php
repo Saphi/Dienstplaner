@@ -12,6 +12,7 @@
 		
 		<div id="seite">
 			<div id="kopf">
+                           
 				<div id="angemeldet">
 <?php
 					/* Variable $recht auf 1 setzen ,wenn Mitarbeiter Administratorrechte hat, ansonsten auf 0 setzen.
@@ -26,6 +27,8 @@
 					}
             		echo $_SESSION['mitarbeiter']->name.' '.$_SESSION['mitarbeiter']->vname.' ('.$recht.') &nbsp;&nbsp;|&nbsp;&nbsp; ';
             		echo '<a href="abmelden.php">abmelden</a>';
+                        
+                      
 ?>
             	</div>
             	<a href="index.php" id="logo"></a>

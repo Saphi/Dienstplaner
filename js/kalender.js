@@ -1,6 +1,6 @@
-﻿// grundeinstellungen
+// grundeinstellungen
 var A_TKALDEF = {
-	'monate' : ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+	'monate' : ['Januar', 'Februar', 'M�rz', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
 	'wochentage' : ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
 	'jahrbl': true, // jahr kann gewechselt werden
 	'wochenstart': 1, // erster tag der woche: 0-So or 1-Mo

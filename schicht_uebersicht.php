@@ -21,6 +21,7 @@ $schichten_array = $schichten->hole_alle_schichten();
 		{
 			echo '<table>';
 			echo '	<tr>';
+                        echo '		<th>&nbsp;</th>';
 			echo '		<th>Bezeichnung</th>';
 			echo '		<th>Abk&uuml;rzung</th>';
 			echo '		<th>von</th>';
@@ -30,15 +31,23 @@ $schichten_array = $schichten->hole_alle_schichten();
 
 			foreach($schichten_array as $schicht)    // Tabelleninhalt
 			{
-				echo '	<tr>';
+                                $temp = explode(":", $schicht->ab);
+                                $zeitab = mktime($temp[0], $temp[1], $temp[2], 0, 0, 0);
+                                $temp = explode(":", $schicht->bis);
+				$zeitbis = mktime($temp[0], $temp[1], $temp[2], 0, 0, 0);
+                                $ab = date("H:i" , $zeitab);
+                                $bis = date("H:i" , $zeitbis);
+				echo '<tr class="hr"><td colspan=7><hr></td></tr>';
+                                echo '	<tr>';
+                                echo '		<td><div class="farbquad" style="background-color:#'.$schicht->color.';"></div></td>';
 				echo '		<td>'.$schicht->bez.'</td>';
 				echo '		<td>'.$schicht->kbez.'</td>';
-				echo '		<td>'.$schicht->ab.'</td>';
-				echo '		<td>'.$schicht->bis.'</td>';
-				echo '		<td><a href="index.php?seite=konfig&sub=bearbeiten&sid='.$schicht->sid.'">bearbeiten</a></td>';
-				echo '		<td><a href="index.php?seite=konfig&l='.$schicht->sid.'" onclick="return confirm(\'Wollen Sie die Schicht mit all ihren Einstellung wirklich l&ouml;schen?\')">l&ouml;schen</a></td>';
+				echo '		<td>'.$ab.'</td>';
+				echo '		<td>'.$bis.'</td>';
+				echo '		<td style="text-align:right;"><a href="index.php?seite=konfig&sub=bearbeiten&sid='.$schicht->sid.'">Bearbeiten</a> ';
+				echo '		| <a href="index.php?seite=konfig&l='.$schicht->sid.'" onclick="return confirm(\'Wollen Sie die Schicht mit all ihren Einstellung wirklich l&ouml;schen?\')">L&ouml;schen</a></td>';
 				echo '	</tr>';
-                     echo '<tr><td colspan=6><hr></td></tr>';
+                     
 			}
 
 
