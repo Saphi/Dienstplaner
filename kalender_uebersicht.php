@@ -65,12 +65,12 @@ foreach($kalender_feld as $woche)
 		}
 		if($test!='1')
 		{
-			echo '<td class="kalenderfeld '.$col_class.' '.$row_class.'" style="color:#acacac;">'.$tag.'</td>';
+			echo '<td class="kalenderfeld '.$col_class.' '.$row_class.'" style="color:#acacac;"><span>'.$tag.'</span></td>';
 		}
 		else
 		{
 			$kalender_termin = $kalender->jahr.'-'.$kalender->monat.'-'.$tag;
-			echo '<td class="kalenderfeld '.$col_class.' '.$row_class.'" style="color:#150e7e;">'.$tag;
+			echo '<td class="kalenderfeld '.$col_class.' '.$row_class.'" style="color:#150e7e;"><span>'.$tag.'</span>';
 			if(isset($schicht_mitarbeiter_kalender_feld[$tag_id+1]))
 			{
 				foreach($schicht_mitarbeiter_kalender_feld[$tag_id+1] as $schluessel => $schicht_mitarbeiter_kalender)
