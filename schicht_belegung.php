@@ -2,6 +2,8 @@
 <?php
 $sql_s = ("SELECT * FROM schicht");
 $query = mysql_query($sql_s);
+$sql_t = ("SELECT * FROM tag");
+$schicht_ma_sql = mysql_query($sql_t);
 /* nach Best�tigung aller Angaben */
 if($_GET['s']=='speichern')
 {
@@ -25,7 +27,8 @@ if($_GET['s']=='speichern')
             mysql_data_seek($query, 0); //array zur�cksetzen
         }
 	}
-    echo "Daten aktualisiert.";
+        $erfolg='Die Daten wurden aktualisiert.';
+	echo '<table><tr><td colspan="2" class="erfolg">'.$erfolg.'</td></tr></table>';
 }
 
 
@@ -42,17 +45,16 @@ $schicht_ma_sql = mysql_query($sql_t);
 		<form action="index.php?seite=konfig&sub=belegung&s=speichern" method="post">
             <table>
                 <tr>
-                	<td colspan=2><h2>ben&ouml;tigte Mitarbeiter</h2></td>
-                </tr>
-                <tr>
-                	<td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td  class="beschriftung">Mitarbeiteranzahl angeben:</td>
-                </tr>
-                <tr>
-                	<td>&nbsp;</td>
-                </tr>
+				<th class="kalenderhead">Montag</th>
+				<th class="kalenderhead">Dienstag</th>
+				<th class="kalenderhead">Mittwoch</th>
+				<th class="kalenderhead">Donnerstag</th>
+				<th class="kalenderhead">Freitag</th>
+				<th class="kalenderhead">Samstag</th>
+				<th class="kalenderhead_7">Sonntag</th>
+		</tr>
+                
+                
                 <tr>
 <?php
         
@@ -69,13 +71,15 @@ $schicht_ma_sql = mysql_query($sql_t);
 	for($i=1; $i<=7; $i++)
    	{
     	$j=1;
-        
+        $col_7="";
+        if($i==7)$col_7="col_7";
+        echo "<td class='kalenderfeld ".$col_7."'>";
         /* f�r jeden ausgew�hlten Wochentag alle gespeicherten Schichten auflisten */
         if(isset($tage[$i]) && $tage[$i]!= "")
         {
 			echo "<input type='hidden' name='TID[".$i."]' value='".$i."' >";
             echo "<input type='hidden' name='tag[".$i."]' value='".$tage[$i]."' >";
-         	echo "<td><b>".$tage[$i].":</b> </td>";
+         
             while($schichten = mysql_fetch_assoc($query))
             {
                
@@ -83,19 +87,20 @@ $schicht_ma_sql = mysql_query($sql_t);
 				$sql_ma = ("select * from schicht_ma WHERE sid = ".$schicht." AND tid = ".$i);
 			    $anzahl_ma_sql = mysql_query($sql_ma);
                 $anzahl_ma = mysql_fetch_assoc($anzahl_ma_sql);
-                echo "<td>";
-                echo $schichten['bez']." (".$schichten['ab']." - ".$schichten['bis']."): </td>";
-                echo "<td><input class='feld_klein' type='Text' size='5' name='MA_".$i."_".$schicht."' ";
+                
+                echo $schichten['bez'].": <br/>";
+                echo "<input class='feld' type='Text' size='10' name='MA_".$i."_".$schicht."' ";
                 /* bereits gespeicherte Mitarbeiteranzahl angeben */
                 if(isset($anzahl_ma))
                 {
                 	echo "value='".$anzahl_ma['ma']."'";
                 }
-                echo "></td></tr><tr><td></td>";
-			}
-			echo "</tr><tr><td colspan=3><br></td></tr>  ";
+                echo "><br/><br/>";
+            }
+		
             mysql_data_seek($query, 0);
         }
+        echo "</td>";
 	}
 ?>
                 </tr>
@@ -103,8 +108,8 @@ $schicht_ma_sql = mysql_query($sql_t);
                 	<td>&nbsp;</td>
                 </tr>
                 <tr>
-                    <td>&nbsp;</td>
-                    <td>
+                   
+                    <td colspan="7">
                         <input class="knopf_speichern" type="submit" value=" ">
                     </td>
                 </tr>

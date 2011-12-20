@@ -1,3 +1,9 @@
+<script>
+    function Changecolor (farbe){
+       document.getElementById("farbeanz").style.backgroundColor = "#"+farbe;
+       document.getElementById("farbewert").value = farbe;
+    }
+</script>
 <?php
 if(isset($_GET['sub']))
 {

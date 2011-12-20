@@ -6,7 +6,11 @@ if($_SESSION['mitarbeiter'])
 include('inc/config.php');
 /* Mitarbeiterklasse einbinden */
 include('klassen/mitarbeiter.klasse.php');
-
+include('klassen/dienstplan.klasse.php');
+include('klassen/schicht.klasse.php');
+$mitarbeiter = new Mitarbeiter();
+$dienstplan_anzeige = new Dienstplan();
+$schichtlegende = new Schicht();
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -20,8 +24,8 @@ include('klassen/mitarbeiter.klasse.php');
         	<div id="dienstplan">
 <?php
 			function wochentag($var) //Wochentag durch Datum ermitteln
-               {
-     			$temp = explode("-", $var);
+                        {
+                                $temp = explode("-", $var);
 				$datum = mktime(0, 0, 0, $temp[1], $temp[2], $temp[0]);
 				$wochentag=array("So", "Mo", "Di", "Mi", "Do", "Fr", "Sa");
 				return $wochentag[date("w", $datum)];
@@ -39,52 +43,56 @@ include('klassen/mitarbeiter.klasse.php');
      		$zw = explode(".",$_POST['bis']);
      		$ende = $zw[2].'-'.$zw[1].'-'.$zw[0]; //Datumsformat Enddatum in TT.MM.JJJJ
 
-    			echo '<h2>Dienstplan von '.$_POST['von'].' bis '.$_POST['bis'].'</h2>';
+               echo '<div class="logo"></div>';
+    			echo '<span class="headline">Dienstplan von <b>'.$_POST['von'].'</b> bis <b>'.$_POST['bis'].'</b></span>';
 
-               echo '<img src="bilder/pfeil_links.png"><a href="index.php?seite=dienstplan">zur&uuml;ck</a><br><br>';
+               echo '<a href="index.php?seite=dienstplan">zur&uuml;ck</a><br><br>';
+               
+               echo '<div id="abschliessen"></div>';
 
                /* wenn Dienstplan f�r alle Mitarbeiter angezeigt werden soll ist anzeige = 1, sonst 0 */
                if($_POST['anzeige']==1)
                {
                	/* alle Mitarbeiter holen */
-               	$ma_sql = mysql_query("SELECT mid, name, vname FROM mitarbeiter");
+                    $ma_sql = $mitarbeiter->hole_alle_mitarbeiter();
                }
                else
                {
                	/* nur angemeldeten Benutzer holen */
-                    $ma_sql = mysql_query("SELECT mid, name, vname FROM mitarbeiter WHERE mid = '".$_GET['mid']."'");
+                    $ma_sql[] = $mitarbeiter->hole_mitarbeiter_durch_id($_GET['mid']);
                }
 
                /* alle gespeicherten Termine im ausgew�hlten Bereich holen */
-    			$termine_sql = mysql_query("SELECT termin FROM schicht_mitarbeiter WHERE termin BETWEEN '".$start."' AND '".$ende."' GROUP BY termin ORDER BY termin");
+    			$termine_sql = $dienstplan_anzeige->hole_alle_termine_von_bis($start, $ende);
 
     			echo '<table class="dienstplan">';
     			echo '<tr>';
-   			echo '<th class="dienstplan">Mitarbeiter</th>';
+   			echo '<th class="dienstplan">&nbsp;</th>';
 
-    			while($termine = mysql_fetch_assoc($termine_sql))    //Kopfzeile Wochentage
+    			foreach($termine_sql  as $termine)    //Kopfzeile Wochentage
     			{
-                                $zw = explode("-",$termine['termin']);
+                                $zw = explode("-",$termine);
                                 $tag = $zw[2].'.'.$zw[1].'.';
-    				echo '<th class="dienstplan">'.wochentag($termine['termin']).'<br/>'.$tag.'</th>';
+    				echo '<th class="dienstplan">'.wochentag($termine).'<br/>'.$tag.'</th>';
     			}
-    			mysql_data_seek($termine_sql, 0);
+    			
     			echo '</tr>';
 
-    			while($ma = mysql_fetch_assoc($ma_sql))   //Mitarbeiterspalte
+    			foreach($ma_sql as $ma)   //Mitarbeiterspalte
     			{
+                           
          			echo '<tr>';
-         			echo '<td class="name">'.$ma['name'].', '.$ma['vname'].'</td>';
+         			echo '<td class="name">'.$ma->name.', '.$ma->vname.'</td>';
 
-         			while($termine = mysql_fetch_assoc($termine_sql))
+         			foreach($termine_sql  as $termine)
     	    			{
-	         			$dienstplan_sql = mysql_query("SELECT sma.termin, s.kbez FROM schicht_mitarbeiter sma JOIN schicht s ON sma.sid =s.sid WHERE sma.termin = '".$termine['termin']."' AND mid = '".$ma['mid']."'");
+	         			$dienstplan = $dienstplan_anzeige->hole_dienst_durch_termine_mid($termine, $ma->mid);
 
-	         			$dienstplan = mysql_fetch_assoc($dienstplan_sql);
+	         			
 
-                         if($termine['termin'] ==  $dienstplan['termin']) //wenn Schicht eingetragen
+                         if($termine ==  $dienstplan->termin) //wenn Schicht eingetragen
 	                    {
-	                         echo '<td class="schicht">'.$dienstplan['kbez'].'</td>';
+	                         echo '<td class="schicht" style="background-color:#'.$dienstplan->color.';">'.$dienstplan->kbez.'</td>';
                          }
                          else
                          {
@@ -92,25 +100,26 @@ include('klassen/mitarbeiter.klasse.php');
                          }
 
          			}
-         			mysql_data_seek($termine_sql, 0); //array zr�cksetzen
+         			
          			echo '</tr>';
     			}
 
     			echo '</table><br><hr>';
 
-    			$schichten_sql = mysql_query("SELECT * FROM schicht");
+    			$schichten_sql = $schichtlegende->hole_alle_schichten();
 
     			echo '<table><tr><th>Legende:</th></tr>';
 
-    			while($schichten = mysql_fetch_assoc($schichten_sql))   //Inhalt Legende
+    			foreach($schichten_sql as $schichten)   //Inhalt Legende
     			{
-          		$temp = explode(":", $schichten['ab']);
+          		$temp = explode(":", $schichten->ab);
 				$zeitab = mktime($temp[0], $temp[1], $temp[2], 0, 0, 0);
-          		$temp = explode(":", $schichten['bis']);
+          		$temp = explode(":", $schichten->bis);
 				$zeitbis = mktime($temp[0], $temp[1], $temp[2], 0, 0, 0);
           		$ab = date("H:i" , $zeitab);
           		$bis = date("H:i" , $zeitbis);
-          		echo '<tr><td>'.$schichten['kbez'].' - '.$schichten['bez'].' ('.$ab.' - '.$bis.')</td></tr>';
+          		echo '<tr><td><div class="farbquad" style="background-color:#'.$schichten->color.'; float:left;"></div>&nbsp;
+                            '.$schichten->kbez.' - '.$schichten->bez.' ('.$ab.' - '.$bis.')</td></tr>';
     			}
 
     			echo '</table>';

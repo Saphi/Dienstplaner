@@ -78,8 +78,8 @@ $schicht_mitarbeiter_feld = $schicht_mitarbeiter->hole_alle_schicht_mitarbeiter_
 
 		<form action="index.php?seite=kalender&sub=detail" method="post">
 <?php
-echo '			<h1>Schicht bearbeiten: '.$schicht->bez.' am '.$tag.'.'.$monat.'.'.$jahr.'</h1>';
-echo '			<p>Ben&ouml;tigte Mitarbeiteranzahl der Schicht: '.$ma_anzahl['ma'].'</p>';
+echo '			<h2>'.$schicht->bez.' am '.$tag.'.'.$monat.'.'.$jahr.'</h2>';
+echo '			<p>Ben&ouml;tigte Mitarbeiter: '.$ma_anzahl['ma'].'</p>';
 
 
 if(isset($erfolg))
@@ -114,9 +114,14 @@ if(isset($erfolg))
 		{
                         $schicht_mitarbeiter_smid = $schicht_mitarbeiter->hole_smid_durch_sid_termin_mid($sid, $termin, $mitarbeiter->mid);
 		
-			echo '<tr><td class="tablerow"><input type="checkbox" name="'.$index.'" value="'.$mitarbeiter->mid.'" style="visibility:hidden;" checked />'.$mitarbeiter->name.', '.$mitarbeiter->vname.' | 
-                            <a href="index.php?seite=kalender&sub=detail&l='.$schicht_mitarbeiter_smid['smid'].'&sid='.$sid.'&jahr='.$jahr.'&monat='.$monat.'&tag='.$tag.'">entfernen</a></td></tr>';
-
+			echo '<tr><td class="tablerow"><input type="checkbox" name="'.$index.'" value="'.$mitarbeiter->mid.'" style="visibility:hidden;" checked />'.$mitarbeiter->name.', '.$mitarbeiter->vname.'</td>';
+                        if($_SESSION['mitarbeiter']->recht=='1')
+			 {
+                        echo '<td class="tablerow"> | <a href="index.php?seite=kalender&sub=detail&l='.$schicht_mitarbeiter_smid['smid'].'&sid='.$sid.'&jahr='.$jahr.'&monat='.$monat.'&tag='.$tag.'">entfernen</a></td></tr>';
+                         }
+                         
+                             echo '</tr>';
+                         
 			
 		}
 			
@@ -124,6 +129,8 @@ if(isset($erfolg))
 	}
         
         echo '</table><table id="top_right">';
+        if($_SESSION['mitarbeiter']->recht=='1')
+        {
         echo '	<tr><th colspan="2">Mitarbeiter hinzuf&uuml;gen</th></tr>';
         echo '<tr><td><select name="'.$index.'">';
         foreach($mitarbeiter_feld as $mitarbeiter)
@@ -162,8 +169,10 @@ if(isset($erfolg))
                     	<input type="hidden" name="termin" value="<?php echo $jahr.'-'.$monat.'-'.$tag; ?>">
                         <input class="knopf_speichern" type="submit" name="speichern" value=" "></td>
                 </tr>
-			</table>
-<?php
+<?php    
+        }
+                echo '</table>';
+
 
 ?>
 		</form>
