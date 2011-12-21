@@ -5,6 +5,7 @@
 /* Mitarbeiterklasse includieren, weil sie in der Session die danach gestartet wird ben�tigt wird.
  * Testen ob Mitarbeiterobjekt gesetzt wurde, d.h. Recht hat die Seiten einzusehen, ansonsten auf anmelden.php weiterleiten.
  */
+include('inc/config.php');
 include('klassen/mitarbeiter.klasse.php');
 session_start();
 if($_SESSION['mitarbeiter'])
@@ -19,7 +20,7 @@ if($_SESSION['mitarbeiter'])
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>Dienstplaner</title>
 		<link rel="stylesheet" type="text/css" href="css/main_css.css">
           <link rel="stylesheet" type="text/css" href="css/kalender.css">
@@ -29,6 +30,7 @@ if($_SESSION['mitarbeiter'])
 
 		<div id="seite">
 			<div id="kopf">
+                             
 				<div id="angemeldet">
 <?php
 					/* Variable $recht auf 1 setzen ,wenn Mitarbeiter Administratorrechte hat, ansonsten auf 0 setzen.
@@ -55,7 +57,7 @@ else
 ?>
             	</div>
             	<a href="index.php" id="logo"></a>
-
+ <?php include('inc/hilfe.php');?>
 	            <div id="menu">
 		        	<a href="index.php?seite=mitarbeiter" id="menu_mitarbeiter" class="menu_objekt <?php if($mainactiv=='mitarbeiter') echo 'mitarbeiter_active'; ?>"><div class="menu_text" id="menu_text_mitarbeiter"> </div></a>
 
@@ -83,7 +85,7 @@ if($_SESSION['mitarbeiter']->recht=='1')
 <?php
 /* Datenbankverbindung herstellen
  */
-include('inc/config.php');
+
 
 
 /* Wenn Seite in URL �bergeben wurde includieren, ansonsten mitarbeiter.php includieren

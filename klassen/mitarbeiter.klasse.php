@@ -23,7 +23,7 @@ class Mitarbeiter
 	}
 
 	/* Schreib Mitarbeiter in Datenbank
-	 * Übergabeparameter:	Name
+	 * Ãœbergabeparameter:	Name
 	 * 						Vorname
 	 * 						Adresse
 	 * 						Telefon
@@ -33,17 +33,18 @@ class Mitarbeiter
 	 *						Arbeitsstunden Monat
 	 *						Urlaubstage Jahr
 	 *						Recht (0 = Mitarbeiter, 1 = Administrator)
-	 *						Passwort (bereits md5 verschlüsselt)
+	 *						Passwort (bereits md5 verschlï¿½sselt)
 	 *						Aktivstatus (0 = inaktiv, 1 = aktiv -> Standard = 0)
 	 */
 	public function schreibe_mitarbeiter($name, $vname, $adresse, $tel, $email, $max_h_d, $max_h_w, $max_h_m, $max_u, $recht, $pw, $aktiv = '0')
 	{
-		mysql_query('INSERT INTO mitarbeiter VALUES("","'.$name.'","'.$vname.'","'.$adresse.'","'.$tel.'","'.$email.'","'.$max_h_d.'","'.$max_h_w.'","'.$max_h_m.'","'.$max_u.'","'.$recht.'","","'.$pw.'","'.$aktiv.'")');
+
+            mysql_query('INSERT INTO mitarbeiter VALUES("","'.$name.'","'.$vname.'","'.$adresse.'","'.$tel.'","'.$email.'","'.$max_h_d.'","'.$max_h_w.'","'.$max_h_m.'","'.$max_u.'","'.$recht.'","","'.$pw.'","'.$aktiv.'")');
 	}
 
-	/* Holt den jeweiligen Mitarbeiter anhand der übergebenen Mitarbeiterid
-	 * Übergabeparameter:	Mitarbeiterid
-	 * Rückgabewert:		Mitarbeiter Objekt
+	/* Holt den jeweiligen Mitarbeiter anhand der Ã¼bergebenen Mitarbeiterid
+	 * Ãœbergabeparameter:	Mitarbeiterid
+	 * RÃ¼ckgabewert:		Mitarbeiter Objekt
 	 */
 	public function hole_mitarbeiter_durch_id($mid)
 	{
@@ -53,9 +54,9 @@ class Mitarbeiter
 		return $mitarbeiter_objekt;
 	}
 
-	/* Holt den jeweiligen Mitarbeiter anhand der übergebenen E-Mail
-	 * Übergabeparameter:	Mitarbeiter-E-Mail
-	 * Rückgabewert:		Mitarbeiter Objekt
+	/* Holt den jeweiligen Mitarbeiter anhand der ï¿½bergebenen E-Mail
+	 * ï¿½bergabeparameter:	Mitarbeiter-E-Mail
+	 * Rï¿½ckgabewert:		Mitarbeiter Objekt
 	 */
 	public function hole_mitarbeiter_durch_email($email)
 	{
@@ -66,7 +67,7 @@ class Mitarbeiter
 	}
 
 	/* Holt alle Mitarbeiter
-	 * Rückgabewert:	Feld -> Mitarbeiter Objekt(e)
+	 * Rï¿½ckgabewert:	Feld -> Mitarbeiter Objekt(e)
 	 */
 	public function hole_alle_mitarbeiter()
 	{
@@ -79,8 +80,8 @@ class Mitarbeiter
 		return $mitarbeiter_objekt_feld;
 	}
 
-	/* Erneuert den bereits vorhandenen Mitarbeiter anhand der übergebenen Mitarbeiterid
-	 * Übergabeparameter:	Mitarbeiterid
+	/* Erneuert den bereits vorhandenen Mitarbeiter anhand der ï¿½bergebenen Mitarbeiterid
+	 * ï¿½bergabeparameter:	Mitarbeiterid
 	 * 						Name
 	 * 						Vorname
 	 * 						Adresse
@@ -91,7 +92,7 @@ class Mitarbeiter
 	 *						Arbeitsstunden Monat
 	 *						Urlaubstage Jahr
 	 *						Recht (0 = Mitarbeiter, 1 = Administrator)
-	 *						Passwort (bereits md5 verschlüsselt)
+	 *						Passwort (bereits md5 verschlï¿½sselt)
 	 *						Aktivstatus (0 = inaktiv, 1 = aktiv -> Standard = 0)
 	 */
 	public function erneuere_mitarbeiter($mid, $name, $vname, $adresse, $tel, $email, $max_h_d, $max_h_w, $max_h_m, $max_u, $recht, $pw, $aktiv = '0')
@@ -99,16 +100,16 @@ class Mitarbeiter
 		mysql_query("UPDATE mitarbeiter SET name='".$name."', vname='".$vname."', adresse='".$adresse."', tel='".$tel."', email='".$email."', max_h_d='".$max_h_d."', max_h_w='".$max_h_w."', max_h_m='".$max_h_m."', max_u='".$max_u."', recht='".$recht."', pw='".$pw."', aktiv='".$aktiv."' WHERE mid='".$mid."'");
 	}
 
-	/* Löscht den Mitarbeiter anhand der übergebenen Mitarbeiterid
-	 * Übergabewert:	Mitarbeiterid
+	/* Lï¿½scht den Mitarbeiter anhand der ï¿½bergebenen Mitarbeiterid
+	 * ï¿½bergabewert:	Mitarbeiterid
 	 */
 	public function loesche_mitarbeiter_durch_id($mid)
 	{
 		mysql_query("DELETE FROM mitarbeiter WHERE mid='".$mid."'");
 	}
 
-	/* Aktiviert/Deaktiviert den Mitarbeiter anhand der übergebenen Mitarbeiterid und des Aktivstatus
-	 * Übergabeparameter:	Mitarbeiterid
+	/* Aktiviert/Deaktiviert den Mitarbeiter anhand der ï¿½bergebenen Mitarbeiterid und des Aktivstatus
+	 * ï¿½bergabeparameter:	Mitarbeiterid
 	 * 						Aktivstatus
 	 */
 	public function aktiviere_mitarbeiter_durch_id($mid, $aktiv)
@@ -116,9 +117,9 @@ class Mitarbeiter
 		mysql_query("UPDATE mitarbeiter SET aktiv=".$aktiv." WHERE mid='".$mid."'");
 	}
 
-	/* Testet die übergebene E-Mail, ob sie bereits in der Datenbank vorhanden ist
-	 * Übergabeparameter: E-Mail
-	 * Rückgabewert:	True (E-Mail bereits vorhanden)
+	/* Testet die ï¿½bergebene E-Mail, ob sie bereits in der Datenbank vorhanden ist
+	 * ï¿½bergabeparameter: E-Mail
+	 * Rï¿½ckgabewert:	True (E-Mail bereits vorhanden)
 	 * 					False (E-Mail noch nicht vorhanden)
 	 */
 	public function teste_email($email)

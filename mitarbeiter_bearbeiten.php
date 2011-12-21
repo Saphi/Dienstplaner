@@ -1,9 +1,12 @@
 <div id="hauptinhalt">
 <?php
-$mid = $_POST['mid'];
+$mid = '';
+
+if(!empty($_POST['mid'])) $mid = $_POST['mid'];
 if($mid==''){
-$mid = $_GET['mid'];
+    if(!empty($_GET['mid'])) $mid = $_GET['mid'];
 }
+
 if($mid==''){
 $mid = $_SESSION['mitarbeiter']->mid;
 }

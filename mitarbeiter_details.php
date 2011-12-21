@@ -1,20 +1,22 @@
 <div id="hauptinhalt">
 <?php
-$mid = $_POST['mid'];
+$mid = '';
+
+if(!empty($_POST['mid'])) $mid = $_POST['mid'];
 if($mid==''){
-$mid = $_GET['mid'];
+    if(!empty($_GET['mid'])) $mid = $_GET['mid'];
 }
+
 if($mid==''){
 $mid = $_SESSION['mitarbeiter']->mid;
 }
-
 /* Daten des ausgew�hlten Mitarbeiters holen */
 $mitarbeiter = new Mitarbeiter();
 $mitarbeiter_auswahl_feld = $mitarbeiter->hole_alle_mitarbeiter();
 ?>
 <form name="auswahl" action="" method="post">
 <select name="mid" onchange="this.form.submit();">
-<option value="">- Benutzer ausw&auml;hlen -</option>
+<option value="">- Benutzer auswählen -</option>
 <?php
 foreach($mitarbeiter_auswahl_feld as $mitarbeiter_auswahl)
 {

@@ -1,21 +1,21 @@
+<div id="submenu"> </div>
+
 <div id="hauptinhalt">
 <?php
 /* Zugriff auf Klasse Mitarbeiter um Mitarbeiterdaten zu holen */
 $mitarbeiter = new Mitarbeiter();
 $mitarbeiter = $mitarbeiter->hole_mitarbeiter_durch_id($_SESSION['mitarbeiter']->mid);
 
+$b_ab = '';
 ?>
+
+    
 <form action="dienstplan_anzeigen.php?mid=<?php echo $mitarbeiter->mid; ?>" method="post" name="dienstplan">
 	<table>
      	<tr>
           	<td><h2>Dienstplan erstellen</h2></td>
           </tr>
-<?php
-		/* alle bereist gespeicherten Termine holen*/
-     	$dienste_sql = mysql_query("SELECT * FROM schicht_mitarbeiter GROUP BY termin");
-	 
-	    
-?>          
+       
          <tr><td> von</td></tr>
           <tr><td><input class="feld" type="date" size="30" name="von" value="<?php echo $b_ab;  ?>" readonly>
                	<script language="JavaScript">  //Kalender zur Datumsauswahl
@@ -41,8 +41,8 @@ $mitarbeiter = $mitarbeiter->hole_mitarbeiter_durch_id($_SESSION['mitarbeiter']-
           echo '</td></tr>';
           echo '<tr><td>';
 
-          echo '<input type="radio" name="anzeige" value="1" checked="checked"> f&uuml;r alle Mitarbeiter<br />';
-          echo '<input type="radio" name="anzeige" value="0" > nur f&uuml;r mich';
+          echo '<input type="radio" name="anzeige" value="1" checked="checked"> für alle Mitarbeiter<br />';
+          echo '<input type="radio" name="anzeige" value="0" > nur für mich';
 
           echo '</td></tr>';
           echo '<tr><td>';

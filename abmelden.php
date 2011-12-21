@@ -1,5 +1,5 @@
 <?php
-/* Session start/holen und zerstören. Danach auf anmelden.php weiterleiten
+/* Session start/holen und zerstÃ¶ren. Danach auf anmelden.php weiterleiten
  */
 session_start();
 session_destroy();

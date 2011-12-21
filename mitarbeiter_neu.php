@@ -29,7 +29,7 @@ function testen($mitarbeiter)
 	return $fehler;
 }
 
-/* nach Best�tigung der Angaben */
+/* nach Bestätigung der Angaben */
 if(isset($_POST['speichern']))
 {
 
@@ -38,7 +38,11 @@ if(isset($_POST['speichern']))
 	if(count($fehler)=='0')
 	{
 		$pw = md5($_POST['pw']);
-		$mitarbeiter->schreibe_mitarbeiter($_POST['name'], $_POST['vname'], $_POST['adresse'], $_POST['tel'], $_POST['email'], $_POST['max_h_d'], $_POST['max_h_w'], $_POST['max_h_m'], $_POST['max_u'], $_POST['recht'], $pw);
+                
+                $adresse = '';
+                if(!empty($_POST['adresse'])) $adresse = $_POST['adresse'];
+                
+		$mitarbeiter->schreibe_mitarbeiter($_POST['name'], $_POST['vname'], $adresse, $_POST['tel'], $_POST['email'], $_POST['max_h_d'], $_POST['max_h_w'], $_POST['max_h_m'], $_POST['max_u'], $_POST['recht'], $pw);
 		$erfolg = 'Neuer Mitarbeiter erfolgreich erstellt.<br>Damit der Mitarbeiter sich anmelden kann muss er noch aktiviert werden.';
 	}
 }

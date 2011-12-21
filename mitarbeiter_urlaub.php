@@ -1,16 +1,22 @@
 <div id="hauptinhalt">
 <?php
-
+include('inc/config.php');
 include('klassen/urlaub.klasse.php');
 
-$mid = $_POST['mid'];
+$mid = '';
+
+if(!empty($_POST['mid'])) $mid = $_POST['mid'];
 if($mid==''){
-$mid = $_GET['mid'];
+    if(!empty($_GET['mid'])) $mid = $_GET['mid'];
 }
+
 if($mid==''){
 $mid = $_SESSION['mitarbeiter']->mid;
 }
 
+$b_ab = '';
+$b_bis = '';
+$b_tage = '';
 
 $mitarbeiter = new Mitarbeiter();
 $urlaub = new Urlaub();
@@ -37,20 +43,23 @@ foreach($mitarbeiter_auswahl_feld as $mitarbeiter_auswahl)
 if($mid!='')
 {
 
-/* Daten des ausgew�hlten Mitarbeiters holen */
+/* Daten des ausgewählten Mitarbeiters holen */
 $mitarbeiter = $mitarbeiter->hole_mitarbeiter_durch_id($mid);
+
+$anzahl_urlaub = 0;
+if(!empty($_POST['anzahl'])) $anzahl_urlaub = $_POST['anzahl'];
 
 
 $anzahl_urlaubstage = mysql_fetch_array(mysql_query('SELECT sum(tage) FROM urlaub WHERE mid = "'.$mid.'" GROUP BY mid'));
 /* Resturlaub berechnen */
 $resturlaub =  $mitarbeiter->max_u - $anzahl_urlaubstage[0];
-$restu_post = $resturlaub - $_POST['anzahl'];
+$restu_post = $resturlaub - $anzahl_urlaub;
 
-if(isset($_GET['l'])) //wenn ein Urlaubseintrag gel�scht wird
+if(isset($_GET['l'])) //wenn ein Urlaubseintrag gelöscht wird
 {
 	mysql_query('DELETE FROM urlaub WHERE uid = '.$_GET['l'].' LIMIT 1');
 }
-if(isset($_GET['b'])) //wenn ein Urlaubseintrag gel�scht wird
+if(isset($_GET['b'])) //wenn ein Urlaubseintrag gelöscht wird
 {
 	$urlaub_bearbeiten_feld = $urlaub->hole_urlaub_durch_uid($_GET['b']);
         foreach ($urlaub_bearbeiten_feld as $urlaub_bearbeiten) {
@@ -65,12 +74,32 @@ if(isset($_GET['b'])) //wenn ein Urlaubseintrag gel�scht wird
 
 if(isset($_POST['speichern']) && $restu_post >= 0) //wenn ein Urlaubseintrag gespeichert wird
 {
-	$zw = explode(".",$_POST['start']);
-     $start = $zw[2].'.'.$zw[1].'.'.$zw[0]; //Datumsformat Startdatum in JJJJ.MM.TT
-     $zw = explode(".",$_POST['ende']);
-     $ende = $zw[2].'.'.$zw[1].'.'.$zw[0]; //Datumsformat Enddatum in JJJJ.MM.TT
+     $today = date("d.m.Y");
+     $zw1 = explode(".",$_POST['start']);
+     $zw2 = explode(".",$_POST['ende']);
+                
+     if($zw1[0] != '')
+     {
+         $start = $zw1[2].'-'.$zw1[1].'-'.$zw1[0]; //Datumsformat Startdatum in JJJJ.MM.TT
+     }else
+     {
+         $start = $today;
+     }    
+                
+     if($zw2[0] != '')
+     {
+         $ende = $zw2[2].'-'.$zw2[1].'-'.$zw2[0]; //Datumsformat Enddatum in JJJJ.MM.TT
+     }else
+     {
+         $ende = $today;
+     }
+
+    // print_r($_POST);
+     
      if($_POST['uid']==''){
-        mysql_query('INSERT INTO urlaub VALUES("", "'.$mid.'","'.$start.'","'.$ende.'","'.$_POST['anzahl'].'")');
+        $anzahl = $_POST['anzahl'];
+        $sql_statement = "INSERT INTO urlaub VALUES(0, '$mid','$start','$ende','$anzahl')";
+        mysql_query($sql_statement);    //'INSERT INTO urlaub (uid, mid, ab, bis, tage) VALUES("", "'.$mid.'","'.$start.'","'.$ende.'","'.$anzahl.'")');
      }
      else{
         mysql_query('UPDATE urlaub SET ab="'.$start.'", bis="'.$ende.'", tage="'.$_POST['anzahl'].'" WHERE uid="'.$_POST['uid'].'"'); 
@@ -186,7 +215,7 @@ if($restu_post < 0)
           </tr>
           <tr>
                       
-              	<td><input type="hidden" size="5" name="uid" value="<?php echo $b_uid;  ?>" >
+              	<td><input type="hidden" size="5" name="uid" value="<?php if(!empty($b_uid)){ echo $b_uid; }else{ $b_uid = '';} ?>" >
           <input class="feld" type="Text" size="30" name="anzahl" value="<?php echo $b_tage;  ?>" ></td>
                 <td style="width: 200px;">&nbsp;</td>
           </tr>

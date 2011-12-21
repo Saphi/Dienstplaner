@@ -3,6 +3,7 @@
 include('klassen/schicht.klasse.php');
 include('klassen/urlaub.klasse.php');
 
+
 if(isset($_GET['sid']) && isset($_GET['tag']) && isset($_GET['monat']) && isset($_GET['jahr']))
 {
 	$sid = $_GET['sid'];
@@ -31,14 +32,14 @@ $ma_anzahl = $schicht_ma->hole_mitarbeiter_anzahl_durch_id($sid, $tid);
 /* nach Best�tigung der Angaben */
 if(isset($_POST['speichern']))
 {
-	/* pr�fen der maximalen Mitarbeiteranzahl */
+	/* prüfen der maximalen Mitarbeiteranzahl */
 	if((count($_POST)-3)>$ma_anzahl['ma'])
 	{
-		$fehler = 'Sie k&ouml;nnen nicht soviele Mitarbeiter der Schicht hinzuf&uuml;gen!';
+		$fehler = 'Sie können nicht soviele Mitarbeiter der Schicht hinzufügen!';
 	}
 	else
 	{
-     	/* wenn maximale Anzahl nicht �berschritten, speichern der Angaben */
+     	/* wenn maximale Anzahl nicht überschritten, speichern der Angaben */
 		$schicht_mitarbeiter = new Schicht_Mitarbeiter();
 		$schicht_mitarbeiter->loesche_schicht_mitarbeiter_durch_sid_termin($_POST['sid'], $termin);
 		foreach($_POST as $schluessel => $schicht_mitarbeiter)
@@ -72,14 +73,14 @@ $schicht_mitarbeiter = new Schicht_Mitarbeiter();
 $schicht_mitarbeiter_feld = $schicht_mitarbeiter->hole_alle_schicht_mitarbeiter_durch_sid_termin($sid, $termin);
 ?>
 <div id="submenu">
-     <a href="index.php?seite=kalender&sub=uebersicht">zur&uuml;ck zum Kalender</a>
+     <a href="index.php?seite=kalender&sub=uebersicht">zurück zum Kalender</a>
 </div>
 <div id="hauptinhalt">
 
 		<form action="index.php?seite=kalender&sub=detail" method="post">
 <?php
-echo '			<h1>Schicht bearbeiten: '.$schicht->bez.' am '.$tag.'.'.$monat.'.'.$jahr.'</h1>';
-echo '			<p>Ben&ouml;tigte Mitarbeiteranzahl der Schicht: '.$ma_anzahl['ma'].'</p>';
+echo '			<h2>'.$schicht->bez.' am '.$tag.'.'.$monat.'.'.$jahr.'</h2>';
+echo '			<p>Benötigte Mitarbeiter: '.$ma_anzahl['ma'].'</p>';
 
 
 if(isset($erfolg))
@@ -103,7 +104,7 @@ if(isset($erfolg))
 		$test = 0;
 		foreach($schicht_mitarbeiter_feld as $schicht_mitarbeiter)
 		{
-          	/* pr�fen ob Mitarbeiter zum gew�hlten Termin Urlaub hat, wenn ja wird er nicht aufgelistet */
+          	/* prüfen ob Mitarbeiter zum gewählten Termin Urlaub hat, wenn ja wird er nicht aufgelistet */
 			if($schicht_mitarbeiter->mid==$mitarbeiter->mid && $schicht_mitarbeiter->termin==$termin)
 			{
 				$test = '1';
@@ -113,18 +114,28 @@ if(isset($erfolg))
 		if($test=='1')
 		{
                         $schicht_mitarbeiter_smid = $schicht_mitarbeiter->hole_smid_durch_sid_termin_mid($sid, $termin, $mitarbeiter->mid);
-		
-			echo '<tr><td class="tablerow"><input type="checkbox" name="'.$index.'" value="'.$mitarbeiter->mid.'" style="visibility:hidden;" checked />'.$mitarbeiter->name.', '.$mitarbeiter->vname.' | 
-                            <a href="index.php?seite=kalender&sub=detail&l='.$schicht_mitarbeiter_smid['smid'].'&sid='.$sid.'&jahr='.$jahr.'&monat='.$monat.'&tag='.$tag.'">entfernen</a></td></tr>';
-
+                        
+			echo '<tr><td class="tablerow"><input type="checkbox" name="'.$index.'" value="'.$mitarbeiter->mid.'" style="visibility:hidden;" checked />'.$mitarbeiter->name.', '.$mitarbeiter->vname.'</td>';
+                        if($_SESSION['mitarbeiter']->recht=='1')
+			 {
+                        echo '<td class="tablerow"> | <a href="index.php?seite=kalender&sub=detail&l='.$schicht_mitarbeiter_smid['smid'].'&sid='.$sid.'&jahr='.$jahr.'&monat='.$monat.'&tag='.$tag.'">entfernen</a></td></tr>';
+                         }
+                         
+                             echo '</tr>';
+                         
 			
-		}
+		}else
+                {
+                    echo "blubb";
+                }
 			
 		$index++;
 	}
         
         echo '</table><table id="top_right">';
-        echo '	<tr><th colspan="2">Mitarbeiter hinzuf&uuml;gen</th></tr>';
+        if($_SESSION['mitarbeiter']->recht=='1')
+        {
+        echo '	<tr><th colspan="2">Mitarbeiter hinzufügen</th></tr>';
         echo '<tr><td><select name="'.$index.'">';
         foreach($mitarbeiter_feld as $mitarbeiter)
 	{
@@ -162,8 +173,10 @@ if(isset($erfolg))
                     	<input type="hidden" name="termin" value="<?php echo $jahr.'-'.$monat.'-'.$tag; ?>">
                         <input class="knopf_speichern" type="submit" name="speichern" value=" "></td>
                 </tr>
-			</table>
-<?php
+<?php    
+        }
+                echo '</table>';
+
 
 ?>
 		</form>

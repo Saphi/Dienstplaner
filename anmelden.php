@@ -8,8 +8,8 @@ include('inc/config.php');
 include('klassen/mitarbeiter.klasse.php');
 
 /* Wenn Formular abgeschickt wird und der Mitarbeiter sich anmelden will.
- * Mitarbeiter anhand der eingegebenen E-Mail Adresse holen und md5 verschl�sseltes Passwort und Aktivstatus auswerten.
- * Wenn beides erfolgreich Mitarbeiter Objekt in Session speichern f�r sp�tere Rechte und Aktiv abfragen.
+ * Mitarbeiter anhand der eingegebenen E-Mail Adresse holen und md5 verschlüsseltes Passwort und Aktivstatus auswerten.
+ * Wenn beides erfolgreich Mitarbeiter Objekt in Session speichern für spütere Rechte und Aktiv abfragen.
  */
 if(isset($_POST['anmelden']))
 {
@@ -25,7 +25,7 @@ if(isset($_POST['anmelden']))
 		}
 		else
 		{
-			$fehler = 'Sie m&uuml;ssen erst vom Administrator aktiviert werden um sich einloggen zu k&ouml;nnen!';
+			$fehler = 'Sie müssen erst vom Administrator aktiviert werden um sich einloggen zu können!';
 		}
 	}
 	else
@@ -37,7 +37,7 @@ if(isset($_POST['anmelden']))
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>Dienstplaner</title>
 		<link rel="stylesheet" type="text/css" href="css/main_css.css">
 	</head>
