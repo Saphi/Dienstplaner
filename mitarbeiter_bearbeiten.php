@@ -8,7 +8,7 @@ if($mid==''){
 }
 
 if($mid==''){
-$mid = $_SESSION['mitarbeiter']->mid;
+$mid = $_SESSION['mitarbeiter']->eid;
 }
 
 /* Daten des ausgew�hlten Mitarbeiters holen */
@@ -21,11 +21,11 @@ $mitarbeiter_auswahl_feld = $mitarbeiter->hole_alle_mitarbeiter();
 <?php
 foreach($mitarbeiter_auswahl_feld as $mitarbeiter_auswahl)
 {
-    if($_SESSION['mitarbeiter']->mid==$mitarbeiter_auswahl->mid || $_SESSION['mitarbeiter']->recht==1)
+    if($_SESSION['mitarbeiter']->eid==$mitarbeiter_auswahl->eid || $_SESSION['mitarbeiter']->role==1)
     {
-        echo '<option value="'.$mitarbeiter_auswahl->mid.'" ';
-        if($mid==$mitarbeiter_auswahl->mid) echo 'selected';
-        echo ' >'.$mitarbeiter_auswahl->name.', '.$mitarbeiter_auswahl->vname.'</option>';
+        echo '<option value="'.$mitarbeiter_auswahl->eid.'" ';
+        if($mid==$mitarbeiter_auswahl->eid) echo 'selected';
+        echo ' >'.$mitarbeiter_auswahl->last_name.', '.$mitarbeiter_auswahl->first_name.'</option>';
     }
 }
 ?>
@@ -68,9 +68,9 @@ function testen($mitarbeiter)
 if(isset($_POST['speichern']))
 {
 	/* wenn Passwort ge�ndert wurde, neues Passwort md5-verschl�sseln */
-	if($mitarbeiter->pw==$_POST['pw'])
+	if($mitarbeiter->password==$_POST['pw'])
 	{
-		$pw = $mitarbeiter->pw;
+		$pw = $mitarbeiter->password;
 	}
 	else
 	{
@@ -80,14 +80,14 @@ if(isset($_POST['speichern']))
      /* wenn kein Fehler gefunden wurde, speichern der Angaben */
 	if(count($fehler)=='0')
 	{
-		$mitarbeiter->erneuere_mitarbeiter($mitarbeiter->mid , $_POST['name'], $_POST['vname'], $_POST['adresse'], $_POST['tel'], $_POST['email'], $_POST['max_h_d'], $_POST['max_h_w'], $_POST['max_h_m'], $_POST['max_u'], $_POST['recht'], $pw, $_POST['aktiv']);
+		$mitarbeiter->erneuere_mitarbeiter($mitarbeiter->eid , $_POST['name'], $_POST['vname'], $_POST['adresse'],$_POST['city'], $_POST['tel'], $_POST['email'], $_POST['max_h_d'], $_POST['max_h_w'], $_POST['max_u'], $_POST['recht'], $pw, $_POST['aktiv']);
 		$erfolg = 'Mitarbeiter wurde erfolgreich aktualisiert.';
 	}
 }
 ?>
 
     
-		<form action="index.php?seite=mitarbeiter&sub=bearbeiten&mid=<?php echo $mitarbeiter->mid; ?>" method="post">
+		<form action="index.php?seite=mitarbeiter&sub=bearbeiten&mid=<?php echo $mitarbeiter->eid; ?>" method="post">
 <?php
 if(isset($erfolg))
 {
@@ -116,12 +116,12 @@ else
                     <td class="beschriftung"<?php if(isset($fehler['vname'])) echo 'style="color:red;"'; ?>>* Vorname</td>
                 </tr>
                 <tr>
-                    <td><input class="feld" type="Text" size="25" name="name" value="<?php if(isset($_POST['name'])) echo $_POST['name']; else echo $mitarbeiter->name; ?>"></td>
-                    <td><input class="feld" type="Text" size="25" name="vname" value="<?php if(isset($_POST['vname'])) echo $_POST['vname']; else echo $mitarbeiter->vname; ?>"></td>
+                    <td><input class="feld" type="Text" size="25" name="name" value="<?php if(isset($_POST['name'])) echo $_POST['name']; else echo $mitarbeiter->last_name; ?>"></td>
+                    <td><input class="feld" type="Text" size="25" name="vname" value="<?php if(isset($_POST['vname'])) echo $_POST['vname']; else echo $mitarbeiter->first_name; ?>"></td>
                 </tr>
                 <tr>
                 	<td class="beschriftung"<?php if(isset($fehler['pw'])) echo 'style="color:red;"'; ?>>* Passwort</td>
-<?php                   if($_SESSION['mitarbeiter']->recht=='1')
+<?php                   if($_SESSION['mitarbeiter']->role=='1')
 			 {
 			     	echo '<td class="beschriftung">Admin</td>';
                          }
@@ -133,28 +133,28 @@ else
                 	
                 </tr>
                 <tr>
-                        <td><input class="feld" type="password" size="25" name="pw" value="<?php if(isset($_POST['pw'])) echo $_POST['pw']; else echo $mitarbeiter->pw; ?>"></td>
+                        <td><input class="feld" type="password" size="25" name="pw" value="<?php if(isset($_POST['pw'])) echo $_POST['pw']; else echo $mitarbeiter->password; ?>"></td>
 <?php
 			/* nur Administrator, darf Recht, Arbeitsstunden und Urlaub bearbeiten */
-                if($_SESSION['mitarbeiter']->recht=='1')
+                if($_SESSION['mitarbeiter']->role=='1')
 			 {
 						
                                 echo '<td>';
                                     echo '<input type="radio" name="recht" value="1" ';
-                                    if($mitarbeiter->recht==1) echo 'checked="checked"';
+                                    if($mitarbeiter->role==1) echo 'checked="checked"';
                                     echo '> ja &nbsp;';
                                     echo '<input type="radio" name="recht" value="0" ';
-                                    if($mitarbeiter->recht==0) echo 'checked="checked"';
+                                    if($mitarbeiter->role==0) echo 'checked="checked"';
                                     echo '> nein';
 					
-                                    echo '<input type="hidden" name="aktiv" value="'.$mitarbeiter->aktiv.'">';
+                                    echo '<input type="hidden" name="aktiv" value="'.$mitarbeiter->active.'">';
 				echo '</td>';
                 	
                         }
                        else
                        {   
-                            echo '<td> <input type="hidden" name="aktiv" value="'.$mitarbeiter->aktiv.'">
-                                <input type="hidden" name="recht" value="'.$mitarbeiter->recht.'"></td>';
+                            echo '<td> <input type="hidden" name="aktiv" value="'.$mitarbeiter->active.'">
+                                <input type="hidden" name="recht" value="'.$mitarbeiter->role.'"></td>';
                        }
                echo '</tr>';
 ?>
@@ -168,8 +168,8 @@ else
                     <td class="beschriftung">PLZ, Ort</td>
                 </tr>
                 <tr>
-                    <td><input class="feld" type="Text" size="25" name="strasse" value="<?php if(isset($_POST['adresse'])) echo $_POST['adresse']; else echo $mitarbeiter->adresse; ?>"></td>
-                    <td><input class="feld" type="Text" size="25" name="plz" value="<?php if(isset($_POST['adresse'])) echo $_POST['adresse']; else echo $mitarbeiter->adresse; ?>"></td>
+                    <td><input class="feld" type="Text" size="25" name="adresse" value="<?php if(isset($_POST['adresse'])) echo $_POST['adresse']; else echo $mitarbeiter->address; ?>"></td>
+                    <td><input class="feld" type="Text" size="25" name="city" value="<?php if(isset($_POST['city'])) echo $_POST['city']; else echo $mitarbeiter->city; ?>"></td>
                 </tr>
 		<tr>
                     <td class="beschriftung"<?php if(isset($fehler['email'])) echo 'style="color:red;"'; ?>>* E-Mail</td>
@@ -182,7 +182,7 @@ else
                 
 <?php
 			/* nur Administrator, darf Recht, Arbeitsstunden und Urlaub bearbeiten */
-                if($_SESSION['mitarbeiter']->recht=='1')
+                if($_SESSION['mitarbeiter']->role=='1')
 			 {
 					
 ?>
@@ -196,26 +196,24 @@ else
                 <tr>
                     <td class="beschriftung">Tag</td>
                     <td class="beschriftung">Woche</td>
-                    <td class="beschriftung">Monat</td>
                 </tr>
 		<tr>
                     <td><input class="feld" type="Text" size="5" name="max_h_d" value="<?php if(isset($_POST['max_h_d'])) echo $_POST['max_h_d']; else echo $mitarbeiter->max_h_d; ?>"></td>
                     <td><input class="feld" type="Text" size="5" name="max_h_w" value="<?php if(isset($_POST['max_h_w'])) echo $_POST['max_h_w']; else echo $mitarbeiter->max_h_w; ?>"></td>
-                    <td><input class="feld" type="Text" size="5" name="max_h_m" value="<?php if(isset($_POST['max_h_m'])) echo $_POST['max_h_m']; else echo $mitarbeiter->max_h_m; ?>"></td>
                 </tr>
 				
 	</table>
         <table id="bottom_right">
                 <tr>
                 	<td><h2>Urlaubstage</h2></td>
-                        <td><a href="index.php?seite=mitarbeiter&sub=urlaub&mid=<?php echo $mitarbeiter->mid; ?> ">Urlaubsdaten bearbeiten</a></td>
+                        <td><a href="index.php?seite=mitarbeiter&sub=urlaub&mid=<?php echo $mitarbeiter->eid; ?> ">Urlaubsdaten bearbeiten</a></td>
                 </tr>
                 <tr>
                     <td class="beschriftung">Urlaubstage pro Jahr</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td><input class="feld" type="Text" size="26" name="max_u" value="<?php if(isset($_POST['max_u'])) echo $_POST['max_u']; else echo $mitarbeiter->max_u; ?>"></td>
+                    <td><input class="feld" type="Text" size="26" name="max_u" value="<?php if(isset($_POST['max_u'])) echo $_POST['max_u']; else echo $mitarbeiter->max_vac; ?>"></td>
                     <td></td>
                 </tr>
                 

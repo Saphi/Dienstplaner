@@ -8,7 +8,7 @@ $mid = $_GET['mid'];
 /* f�r ausgew�hlten Mitarbeiter wird status ge�ndert */
 $mitarbeiter = $mitarbeiter->hole_mitarbeiter_durch_id($mid);
 
-if($mitarbeiter->aktiv>0)
+if($mitarbeiter->active>0)
 {
 	$aktiv=0;
 }

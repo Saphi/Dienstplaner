@@ -4,13 +4,13 @@
 <?php
 /* Zugriff auf Klasse Mitarbeiter um Mitarbeiterdaten zu holen */
 $mitarbeiter = new Mitarbeiter();
-$mitarbeiter = $mitarbeiter->hole_mitarbeiter_durch_id($_SESSION['mitarbeiter']->mid);
+$mitarbeiter = $mitarbeiter->hole_mitarbeiter_durch_id($_SESSION['mitarbeiter']->eid);
 
 $b_ab = '';
 ?>
 
     
-<form action="dienstplan_anzeigen.php?mid=<?php echo $mitarbeiter->mid; ?>" method="post" name="dienstplan">
+<form action="dienstplan_anzeigen.php?mid=<?php echo $mitarbeiter->eid; ?>" method="post" name="dienstplan">
 	<table>
      	<tr>
           	<td><h2>Dienstplan erstellen</h2></td>

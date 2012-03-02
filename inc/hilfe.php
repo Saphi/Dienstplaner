@@ -5,7 +5,19 @@ else $seite = 'mitarbeiter';
 if(isset($_GET['sub'])) $sub = $_GET['sub'];
 else $sub = 'uebersicht';
 
-$hilfe=mysql_fetch_assoc(mysql_query("SELECT text FROM hilfe WHERE seite='".$seite."' AND sub='".$sub."'"));
+$handle = fopen ("./ext/help.csv","r");
+
+$row = 1; 
+// Anzahl der Arrays
+while ( ($data = fgetcsv ($handle, 10000, ";")) !== FALSE ) { // Daten werden aus der Datei
+                                               // in ein Array $data gelesen             
+   		
+       $helptext[$data[0]][$data[1]]= $data[2];           
+
+   
+}
+fclose ($handle);
+
 
 ?>
 
@@ -13,7 +25,7 @@ $hilfe=mysql_fetch_assoc(mysql_query("SELECT text FROM hilfe WHERE seite='".$sei
     <div id="hilfe_content">
         
         <?php
-            echo $hilfe['text'];
+            echo $helptext[$seite][$sub];
         ?>
         
     </div>

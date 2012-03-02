@@ -69,7 +69,7 @@ foreach($schicht as $schicht_auswahl)
 {
         echo '<option value="'.$schicht_auswahl->sid.'" ';
         if($sid==$schicht_auswahl->sid) echo 'selected';
-        echo ' >'.$schicht_auswahl->bez.' ('.$schicht_auswahl->kbez.')</option>';
+        echo ' >'.$schicht_auswahl->name.' ('.$schicht_auswahl->nick.')</option>';
 }
 ?>
 </select>
@@ -122,8 +122,8 @@ else
                     <td class="beschriftung"<?php if(isset($fehler['kbez'])) echo 'style="color:red;"'; ?>>Kurzbezeichnung</td>
                 </tr>
                 <tr>
-                    <td><input class="feld" type="Text" size="26" name="bez" value="<?php if(isset($_POST['bez'])) echo $_POST['bez']; else echo $schicht->bez; ?>"></td>
-                    <td><input class="feld" type="Text" size="26" name="kbez" value="<?php if(isset($_POST['kbez'])) echo $_POST['kbez']; else echo $schicht->kbez; ?>"></td>
+                    <td><input class="feld" type="Text" size="26" name="bez" value="<?php if(isset($_POST['bez'])) echo $_POST['bez']; else echo $schicht->name; ?>"></td>
+                    <td><input class="feld" type="Text" size="26" name="kbez" value="<?php if(isset($_POST['kbez'])) echo $_POST['kbez']; else echo $schicht->nick; ?>"></td>
                 </tr>
                 <tr>
                     <td class="beschriftung"<?php if(isset($fehler['ab'])) echo 'style="color:red;"'; ?>>Startzeit</td>
@@ -131,8 +131,8 @@ else
                 </tr>
                 <tr>
                     
-                    <td><input class="feld" type="Text" size="26" name="ab" value="<?php if(isset($_POST['ab'])) echo $_POST['ab']; else echo $schicht->ab; ?>"></td>
-                    <td><input class="feld" type="Text" size="26" name="bis" value="<?php if(isset($_POST['bis'])) echo $_POST['bis']; else echo $schicht->bis; ?>"></td>
+                    <td><input class="feld" type="Text" size="26" name="ab" value="<?php if(isset($_POST['ab'])) echo $_POST['ab']; else echo $schicht->start; ?>"></td>
+                    <td><input class="feld" type="Text" size="26" name="bis" value="<?php if(isset($_POST['bis'])) echo $_POST['bis']; else echo $schicht->end; ?>"></td>
                 </tr>
                 <tr>
                     <td colspan="2"><input class="knopf_speichern" name="speichern" type="submit" value=" "></td>
@@ -183,7 +183,8 @@ else
         </form>
 	
    
-</div>
+
  <?php
 }
 ?>
+</div>

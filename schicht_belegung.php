@@ -1,8 +1,8 @@
 <div id="hauptinhalt">
 <?php
-$sql_s = ("SELECT * FROM schicht");
+$sql_s = ("SELECT * FROM shifts");
 $query = mysql_query($sql_s);
-$sql_t = ("SELECT * FROM tag");
+$sql_t = ("SELECT * FROM day");
 $schicht_ma_sql = mysql_query($sql_t);
 
 $s = '';
@@ -12,7 +12,7 @@ if(!empty($_GET['s'])) $s = $_GET['s'];
 if($s=='speichern')
 {
 	/* leeren der Tabellen schicht_ma und tag */
-	$leeren = mysql_query("TRUNCATE TABLE schicht_ma");
+	$leeren = mysql_query("TRUNCATE TABLE shift_must");
 	$tag = $_POST["tag"];
 	$tid = $_POST["TID"];
     for($i=1; $i<=7; $i++)
@@ -26,7 +26,7 @@ if($s=='speichern')
             	$sid = $schichten["sid"];
 				$id = "MA_".$i."_".$sid;
                 $anzahl = $_POST[$id];
-				$speichern = mysql_query("INSERT INTO schicht_ma (TID, SID, MA)	VALUES ('".$tid[$i]."', '".$sid."', '".$anzahl."')");
+				$speichern = mysql_query("INSERT INTO shift_must (did, sid, must) VALUES ('".$tid[$i]."', '".$sid."', '".$anzahl."')");
             }
             mysql_data_seek($query, 0); //array zur�cksetzen
         }
@@ -39,9 +39,9 @@ if($s=='speichern')
 
 
 /* alle gespeicherten Schichten und Tage holen */
-$sql_s = ("SELECT * FROM schicht");
+$sql_s = ("SELECT * FROM shifts");
 $query = mysql_query($sql_s);
-$sql_t = ("SELECT * FROM tag");
+$sql_t = ("SELECT * FROM days");
 $schicht_ma_sql = mysql_query($sql_t);
 
 
@@ -64,7 +64,7 @@ $schicht_ma_sql = mysql_query($sql_t);
         
         while($schicht_ma = mysql_fetch_assoc($schicht_ma_sql))
 	{
-		$tage[$schicht_ma['tid']] = $schicht_ma['name'];
+		$tage[$schicht_ma['did']] = $schicht_ma['name'];
                
 	}
        /* while($schichten = mysql_fetch_assoc($query))
@@ -88,16 +88,16 @@ $schicht_ma_sql = mysql_query($sql_t);
             {
                
             	$schicht = $schichten["sid"];
-				$sql_ma = ("select * from schicht_ma WHERE sid = ".$schicht." AND tid = ".$i);
+				$sql_ma = ("select * from shift_must WHERE sid = ".$schicht." AND did = ".$i);
 			    $anzahl_ma_sql = mysql_query($sql_ma);
                 $anzahl_ma = mysql_fetch_assoc($anzahl_ma_sql);
                 
-                echo $schichten['bez'].": <br/>";
+                echo $schichten['name'].": <br/>";
                 echo "<input class='feld' type='Text' size='10' name='MA_".$i."_".$schicht."' ";
                 /* bereits gespeicherte Mitarbeiteranzahl angeben */
                 if(isset($anzahl_ma))
                 {
-                	echo "value='".$anzahl_ma['ma']."'";
+                	echo "value='".$anzahl_ma['must']."'";
                 }
                 echo "><br/><br/>";
             }

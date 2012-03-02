@@ -11,7 +11,7 @@ if($mid==''){
 }
 
 if($mid==''){
-$mid = $_SESSION['mitarbeiter']->mid;
+$mid = $_SESSION['mitarbeiter']->eid;
 }
 
 $b_ab = '';
@@ -29,11 +29,11 @@ $mitarbeiter_auswahl_feld = $mitarbeiter->hole_alle_mitarbeiter();
 <?php
 foreach($mitarbeiter_auswahl_feld as $mitarbeiter_auswahl)
 {
-    if($_SESSION['mitarbeiter']->mid==$mitarbeiter_auswahl->mid || $_SESSION['mitarbeiter']->recht==1)
+    if($_SESSION['mitarbeiter']->eid==$mitarbeiter_auswahl->eid || $_SESSION['mitarbeiter']->role==1)
     {
-        echo '<option value="'.$mitarbeiter_auswahl->mid.'" ';
-        if($mid==$mitarbeiter_auswahl->mid) echo 'selected';
-        echo ' >'.$mitarbeiter_auswahl->name.', '.$mitarbeiter_auswahl->vname.'</option>';
+        echo '<option value="'.$mitarbeiter_auswahl->eid.'" ';
+        if($mid==$mitarbeiter_auswahl->eid) echo 'selected';
+        echo ' >'.$mitarbeiter_auswahl->last_name.', '.$mitarbeiter_auswahl->first_name.'</option>';
     }
 }
 ?>
@@ -50,25 +50,28 @@ $anzahl_urlaub = 0;
 if(!empty($_POST['anzahl'])) $anzahl_urlaub = $_POST['anzahl'];
 
 
-$anzahl_urlaubstage = mysql_fetch_array(mysql_query('SELECT sum(tage) FROM urlaub WHERE mid = "'.$mid.'" GROUP BY mid'));
+$anzahl_urlaubstage = mysql_fetch_array(mysql_query('SELECT sum(amount_days) FROM employee_vac WHERE eid = "'.$mid.'" GROUP BY eid'));
 /* Resturlaub berechnen */
-$resturlaub =  $mitarbeiter->max_u - $anzahl_urlaubstage[0];
+$resturlaub =  $mitarbeiter->max_vac - $anzahl_urlaubstage[0];
 $restu_post = $resturlaub - $anzahl_urlaub;
 
 if(isset($_GET['l'])) //wenn ein Urlaubseintrag gelöscht wird
 {
-	mysql_query('DELETE FROM urlaub WHERE uid = '.$_GET['l'].' LIMIT 1');
+	mysql_query('DELETE FROM employee_vac WHERE vid = '.$_GET['l'].' LIMIT 1');
 }
-if(isset($_GET['b'])) //wenn ein Urlaubseintrag gelöscht wird
+if(isset($_GET['b'])) //wenn ein Urlaubseintrag bearbeitet wird
 {
+        
+        
 	$urlaub_bearbeiten_feld = $urlaub->hole_urlaub_durch_uid($_GET['b']);
         foreach ($urlaub_bearbeiten_feld as $urlaub_bearbeiten) {
-            $zw = explode("-",$urlaub_bearbeiten->ab);
+            $zw = explode("-",$urlaub_bearbeiten->start);
             $b_ab = $zw[2].'.'.$zw[1].'.'.$zw[0];
-            $zw = explode("-",$urlaub_bearbeiten->bis);
+            $zw = explode("-",$urlaub_bearbeiten->end);
             $b_bis = $zw[2].'.'.$zw[1].'.'.$zw[0];
-            $b_tage = $urlaub_bearbeiten->tage;
-            $b_uid = $urlaub_bearbeiten->uid;
+            $b_tage = $urlaub_bearbeiten->amount_days;
+            $b_uid = $urlaub_bearbeiten->vid;
+            
         }
 }
 
@@ -98,21 +101,21 @@ if(isset($_POST['speichern']) && $restu_post >= 0) //wenn ein Urlaubseintrag ges
      
      if($_POST['uid']==''){
         $anzahl = $_POST['anzahl'];
-        $sql_statement = "INSERT INTO urlaub VALUES(0, '$mid','$start','$ende','$anzahl')";
+        $sql_statement = "INSERT INTO employee_vac VALUES(0, '$mid','$start','$ende','$anzahl')";
         mysql_query($sql_statement);    //'INSERT INTO urlaub (uid, mid, ab, bis, tage) VALUES("", "'.$mid.'","'.$start.'","'.$ende.'","'.$anzahl.'")');
      }
      else{
-        mysql_query('UPDATE urlaub SET ab="'.$start.'", bis="'.$ende.'", tage="'.$_POST['anzahl'].'" WHERE uid="'.$_POST['uid'].'"'); 
+        mysql_query('UPDATE employee_vac SET start="'.$start.'", end="'.$ende.'", amount_days="'.$_POST['anzahl'].'" WHERE vid="'.$_POST['uid'].'"'); 
      }
 }
 $urlaub_alle_feld = $urlaub->hole_urlaub_durch_mid($mid);
-$anzahl_urlaubstage = mysql_fetch_array(mysql_query('SELECT sum(tage) FROM urlaub WHERE mid = "'.$mid.'" GROUP BY mid'));
+$anzahl_urlaubstage = mysql_fetch_array(mysql_query('SELECT sum(amount_days) FROM employee_vac WHERE eid = "'.$mid.'" GROUP BY eid'));
 /* Resturlaub berechnen */
-$resturlaub =  $mitarbeiter->max_u - $anzahl_urlaubstage[0];
+$resturlaub =  $mitarbeiter->max_vac - $anzahl_urlaubstage[0];
 //$urlaub_sql = mysql_query('SELECT * FROM urlaub WHERE mid = "'.$mid.'" ORDER by ab');
 
 ?>
-<form action="index.php?seite=mitarbeiter&sub=urlaub&mid=<?php echo $mitarbeiter->mid; ?>" name="urlaub" method="post">
+<form action="index.php?seite=mitarbeiter&sub=urlaub&mid=<?php echo $mitarbeiter->eid; ?>" name="urlaub" method="post">
 <?php
 if($restu_post < 0)
 {
@@ -134,7 +137,7 @@ if($restu_post < 0)
                 <td colspan=3 class="beschriftung">Resturlaub (von Gesamturlaub)</td>
           </tr>
      	<tr>
-                <td><?php echo $mitarbeiter->name; echo ", "; echo $mitarbeiter->vname; ?></td>
+                <td><?php echo $mitarbeiter->last_name; echo ", "; echo $mitarbeiter->first_name; ?></td>
                 <td colspan=3>
 <?php
                          if($resturlaub < 0)
@@ -145,7 +148,7 @@ if($restu_post < 0)
                         {
                             echo $resturlaub;
                         }
-                            echo ' (von '.$mitarbeiter->max_u.')';
+                            echo ' (von '.$mitarbeiter->max_vac.')';
 ?>
                 </td>
                 
@@ -158,19 +161,19 @@ if($restu_post < 0)
 		/* gespeicherte Urlaubsdaten auflisten */
 		foreach($urlaub_alle_feld as $urlaub_alle)
 {
-          	$zw = explode("-",$urlaub_alle->ab);
+          	$zw = explode("-",$urlaub_alle->start);
         		$start = $zw[2].'.'.$zw[1].'.'.$zw[0]; //Datumsformat Startdatum in TT.MM.JJJJ
-       		$zw = explode("-",$urlaub_alle->bis);
+       		$zw = explode("-",$urlaub_alle->end);
         		$ende = $zw[2].'.'.$zw[1].'.'.$zw[0]; //Datumsformat Enddatum in TT.MM.JJJJ
-               echo '<tr><td colspan=4>'.$start.' - '.$ende.' ('.$urlaub_alle->tage.' Arbeitstage)';
-                if($_SESSION['mitarbeiter']->recht=='1')
+               echo '<tr><td colspan=4>'.$start.' - '.$ende.' ('.$urlaub_alle->amount_days.' Arbeitstage)';
+                if($_SESSION['mitarbeiter']->role=='1')
 			 {
-               echo '<br /><a href="index.php?seite=mitarbeiter&sub=urlaub&mid='.$mitarbeiter->mid.'&b='.$urlaub_alle->uid.'" >bearbeiten</a>';
-               echo ' | <a href="index.php?seite=mitarbeiter&sub=urlaub&mid='.$mitarbeiter->mid.'&l='.$urlaub_alle->uid.'" onclick="javascript:alert(\'Wollen Sie diese Urlaubsdaten wirklich l&ouml;schen?\');">l&ouml;schen</a></td>';
+               echo '<br /><a href="index.php?seite=mitarbeiter&sub=urlaub&mid='.$mitarbeiter->eid.'&b='.$urlaub_alle->vid.'" >bearbeiten</a>';
+               echo ' | <a href="index.php?seite=mitarbeiter&sub=urlaub&mid='.$mitarbeiter->eid.'&l='.$urlaub_alle->vid.'" onclick="javascript:alert(\'Wollen Sie diese Urlaubsdaten wirklich l&ouml;schen?\');">l&ouml;schen</a></td>';
                          }
 }
 
- if($_SESSION['mitarbeiter']->recht=='1')
+ if($_SESSION['mitarbeiter']->role=='1')
 {
 ?>
 		<tr>

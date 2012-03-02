@@ -2,9 +2,9 @@
 $wochentage = array("Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag");
 
 /* alle gespeicherten Schichten und Tage holen */
-$sql_s = ("SELECT * FROM schicht");
+$sql_s = ("SELECT * FROM shifts");
 $query = mysql_query($sql_s);
-$sql_t = ("SELECT * FROM tag");
+$sql_t = ("SELECT * FROM days");
 $schicht_ma_sql = mysql_query($sql_t);
 
 if($_GET['s']==1)
@@ -30,7 +30,7 @@ if($_GET['s']==1)
                     <td>
 <?php
 	$i=1;
-     /* alle Wochetage auflisten und bereits gespeicherte auswählen */
+     /* alle Wochetage auflisten und bereits gespeicherte auswï¿½hlen */
 	foreach($wochentage as $wtag)
 	{
 		echo '<input type="checkbox" name="tage['.$i.']" value="'.$wtag.'"';
@@ -84,7 +84,7 @@ if($_GET['s']==2)
    	{
     	$j=1;
         $tage = $_POST['tage'];
-        /* für jeden ausgewählten Wochentag alle gespeicherten Schichten auflisten */
+        /* fï¿½r jeden ausgewï¿½hlten Wochentag alle gespeicherten Schichten auflisten */
         if(isset($tage[$i]) && $tage[$i]!= "")
         {
 			echo "<input type='hidden' name='TID[".$i."]' value='".$i."' >";
@@ -93,7 +93,7 @@ if($_GET['s']==2)
             while($schichten = mysql_fetch_assoc($query))
             {
             	$schicht = $schichten["sid"];
-				$sql_ma = ("select * from schicht_ma WHERE sid = ".$schicht." AND tid = ".$i);
+				$sql_ma = ("select * from shift_must WHERE sid = ".$schicht." AND did = ".$i);
 			    $anzahl_ma_sql = mysql_query($sql_ma);
                 $anzahl_ma = mysql_fetch_assoc($anzahl_ma_sql);
                 echo "<td>";
@@ -125,7 +125,7 @@ if($_GET['s']==2)
         </form>
 <?php
 }
-/* nach Bestätigung aller Angaben */
+/* nach Bestï¿½tigung aller Angaben */
 if($_GET['s']=='speichern')
 {
 	/* leeren der Tabellen schicht_ma und tag */
@@ -146,7 +146,7 @@ if($_GET['s']=='speichern')
                 $anzahl = $_POST[$id];
 				$speichern = mysql_query("INSERT INTO schicht_ma (TID, SID, MA)	VALUES ('".$tid[$i]."', '".$sid."', '".$anzahl."')");
             }
-            mysql_data_seek($query, 0); //array zurücksetzen
+            mysql_data_seek($query, 0); //array zurï¿½cksetzen
         }
 	}
     echo "Daten aktualisiert.";
@@ -157,7 +157,7 @@ if($_GET['s']=='speichern')
 </div>
 <div id="fuss">
     <div id="fuss_text">
-        Hier k&ouml;nnen für jeden Arbeitstag zu den erstellten Schichten<br>
-         die benötigte Anzahl an Mitarbeitern angegeben werden.
+        Hier k&ouml;nnen fï¿½r jeden Arbeitstag zu den erstellten Schichten<br>
+         die benï¿½tigte Anzahl an Mitarbeitern angegeben werden.
     </div>
 </div>

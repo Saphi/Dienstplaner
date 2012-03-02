@@ -20,7 +20,7 @@
  	 */
  	public function schreibe_schicht_mitarbeiter($sid, $mid, $termin)
  	{
- 		mysql_query('INSERT INTO schicht_mitarbeiter VALUES(" ", "'.$sid.'", "'.$mid.'", "'.$termin.'")');
+ 		mysql_query('INSERT INTO empshift VALUES(" ", "'.$mid.'", "'.$termin.'","'.$sid.'", "")');
  	}
  	
  	/* L�scht alle Schicht_Mitarbeiter anhand der Schichtid
@@ -28,7 +28,7 @@
  	 */
  	public function loesche_alle_schicht_mitarbeiter_durch_sid($sid)
  	{
- 		mysql_query("DELETE FROM schicht_mitarbeiter WHERE sid='".$sid."'");
+ 		mysql_query("DELETE FROM empshift WHERE shifts_sid='".$sid."'");
  	}
  	
  	/* L�scht alle Schicht_Mitarbeiter anhand der Mitarbeiterid
@@ -36,7 +36,7 @@
  	 */
  	public function loesche_alle_schicht_mitarbeiter_durch_mid($mid)
  	{
- 		mysql_query("DELETE FROM schicht_mitarbeiter WHERE mid='".$mid."'");
+ 		mysql_query("DELETE FROM empshift WHERE employees_eid='".$mid."'");
  	}
  	
  	/* L�scht den Schicht_Mitarbeiter anhand der Schichtid und dem Termin
@@ -45,12 +45,12 @@
  	 */
  	public function loesche_schicht_mitarbeiter_durch_sid_termin($sid, $termin)
  	{
- 		mysql_query("DELETE FROM schicht_mitarbeiter WHERE sid='".$sid."' AND termin='".$termin."'");
+ 		mysql_query("DELETE FROM empshift WHERE shifts_sid='".$sid."' AND date='".$termin."'");
  	}
         
         public function loesche_schicht_mitarbeiter_durch_smid($smid)
  	{
- 		mysql_query("DELETE FROM schicht_mitarbeiter WHERE smid='".$smid."'");
+ 		mysql_query("DELETE FROM empshift WHERE empShiftid='".$smid."'");
  	}
  	
  	/* Holt alle Schit_Mitarbeiter anhand der Schichtid
@@ -60,9 +60,9 @@
  	public function hole_alle_schicht_mitarbeiter_durch_sid($sid)
  	{
  		$schichten_mitarbeiter_feld = array();
- 		$puffer = mysql_query("SELECT * FROM schicht_mitarbeiter WHERE sid='".$sid."'");
+ 		$puffer = mysql_query("SELECT * FROM empshift WHERE shifts_sid='".$sid."'");
  		
- 		while($mitarbeiter_schicht_objekt = mysql_fetch_object($puffer, 'Schicht_Mitarbeiter', array('smid', 'sid', 'mid', 'termin')))
+ 		while($mitarbeiter_schicht_objekt = mysql_fetch_object($puffer, 'Schicht_Mitarbeiter', array('empShiftid', 'shifts_sid', 'employees_eid', 'date')))
  		{
  			$schichten_mitarbeiter_feld[] = $mitarbeiter_schicht_objekt;
  		}
@@ -77,9 +77,9 @@
  	public function hole_alle_schicht_mitarbeiter_durch_sid_termin($sid,$termin)
  	{
  		$schichten_mitarbeiter_feld = array();
- 		$puffer = mysql_query("SELECT * FROM schicht_mitarbeiter WHERE sid='".$sid."' AND termin='".$termin."'");
+ 		$puffer = mysql_query("SELECT * FROM empshift WHERE shifts_sid='".$sid."' AND date='".$termin."'");
  		
- 		while($mitarbeiter_schicht_objekt = mysql_fetch_object($puffer, 'Schicht_Mitarbeiter', array('smid', 'sid', 'mid', 'termin')))
+ 		while($mitarbeiter_schicht_objekt = mysql_fetch_object($puffer, 'Schicht_Mitarbeiter', array('empShiftid', 'shifts_sid', 'employees_eid', 'date')))
  		{
  			$schichten_mitarbeiter_feld[] = $mitarbeiter_schicht_objekt;
  		}
@@ -88,7 +88,7 @@
         
         public function hole_smid_durch_sid_termin_mid($sid,$termin,$mid)
  	{
- 		$puffer = mysql_query("SELECT smid FROM schicht_mitarbeiter WHERE sid='".$sid."' AND termin='".$termin."' AND mid='".$mid."'");
+ 		$puffer = mysql_query("SELECT empShiftid FROM empshift WHERE shifts_sid='".$sid."' AND date='".$termin."' AND employees_eid='".$mid."'");
  		return mysql_fetch_array($puffer);
  	}
  	
@@ -99,7 +99,7 @@
  	 */
  	public function hole_mitarbeiter_anzahl_durch_id($sid, $tid)
  	{
- 		$puffer = mysql_query("SELECT ma FROM schicht_ma WHERE sid='".$sid."' AND tid='".$tid."'");
+ 		$puffer = mysql_query("SELECT must FROM shift_must WHERE sid='".$sid."' AND did='".$tid."'");
  		return mysql_fetch_array($puffer);
  	}
  }

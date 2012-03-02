@@ -16,9 +16,9 @@ if(isset($_POST['anmelden']))
 	$mitarbeiter = new Mitarbeiter();
 	$mitarbeiter = $mitarbeiter->hole_mitarbeiter_durch_email($_POST['email']);
 
-	if($mitarbeiter && $mitarbeiter->pw==md5($_POST['pw']))
+	if($mitarbeiter && $mitarbeiter->password==md5($_POST['pw']))
 	{
-		if($mitarbeiter->aktiv=='1')
+		if($mitarbeiter->active=='1')
 		{
 			$_SESSION['mitarbeiter'] = $mitarbeiter;
 			header('Location: index.php');

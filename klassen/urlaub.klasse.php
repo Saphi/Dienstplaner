@@ -21,8 +21,8 @@ class Urlaub
 	public function hole_urlaub_durch_mid($mid)
 	{
 		$urlaub_feld = array();
-		$puffer = mysql_query("SELECT * FROM urlaub WHERE mid='".$mid."' ORDER BY ab");
-		while($urlaub_objekt = mysql_fetch_object($puffer, 'Urlaub', array('uid', 'mid', 'ab', 'bis', 'tage')))
+		$puffer = mysql_query("SELECT * FROM employee_vac WHERE eid='".$mid."' ORDER BY start");
+		while($urlaub_objekt = mysql_fetch_object($puffer, 'Urlaub', array('vid', 'eid', 'start', 'end', 'amount_days')))
 		{
 			$urlaub_feld[] = $urlaub_objekt;
 		}
@@ -32,8 +32,8 @@ class Urlaub
         public function hole_urlaub_durch_uid($uid)
 	{
 		$urlaub_feld = array();
-		$puffer = mysql_query("SELECT * FROM urlaub WHERE uid='".$uid."'");
-		while($urlaub_objekt = mysql_fetch_object($puffer, 'Urlaub', array('uid', 'mid', 'ab', 'bis', 'tage')))
+		$puffer = mysql_query("SELECT * FROM employee_vac WHERE vid='".$uid."'");
+		while($urlaub_objekt = mysql_fetch_object($puffer, 'Urlaub', array('vid', 'eid', 'start', 'end', 'amount_days')))
 		{
 			$urlaub_feld[] = $urlaub_objekt;
 		}

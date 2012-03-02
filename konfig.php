@@ -38,7 +38,7 @@ if(isset($_GET['action']) && $_GET['action']=='a')
 
     $mitarbeiter = $mitarbeiter->hole_mitarbeiter_durch_id($mid);
 
-    if($mitarbeiter->aktiv>0)
+    if($mitarbeiter->active>0)
     {
 	$aktiv=0;
     }

@@ -20,12 +20,12 @@ $schichten_array = $schichten->hole_alle_schichten();
 			foreach($schichten_array as $schicht)    // Tabelleninhalt
 			{
 				echo '	<tr>';
-				echo '		<td>'.$schicht->bez.'</td>';
-				echo '		<td>'.$schicht->kbez.'</td>';
-				echo '		<td>'.$schicht->ab.'</td>';
-				echo '		<td>'.$schicht->bis.'</td>';
+				echo '		<td>'.$schicht->name.'</td>';
+				echo '		<td>'.$schicht->nick.'</td>';
+				echo '		<td>'.$schicht->start.'</td>';
+				echo '		<td>'.$schicht->end.'</td>';
 				echo '		<td><a href="index.php?seite=schicht_bearbeiten&sid='.$schicht->sid.'">bearbeiten</a></td>';
-				echo '		<td><a href="index.php?seite=schicht_loeschen&sid='.$schicht->sid.'" onclick="return confirm(\'Wollen Sie die Schicht mit all ihren Einstellung wirklich löschen?\')">löschen</a></td>';
+				echo '		<td><a href="index.php?seite=schicht_loeschen&sid='.$schicht->sid.'" onclick="return confirm(\'Wollen Sie die Schicht mit all ihren Einstellung wirklich lï¿½schen?\')">lï¿½schen</a></td>';
 				echo '	</tr>';
                      echo '<tr><td colspan=6><hr></td></tr>';
 			}
@@ -42,6 +42,6 @@ $schichten_array = $schichten->hole_alle_schichten();
 <div id="fuss">
     <div id="fuss_text">
         Hier k&ouml;nnen Sie ausw&auml;hlen, ob Sie eine neue Schicht erstellen<br>
-        oder eine bereits vorhandene Schicht bearbeiten oder löschen wollen.
+        oder eine bereits vorhandene Schicht bearbeiten oder lï¿½schen wollen.
     </div>
 </div>

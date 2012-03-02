@@ -12,7 +12,7 @@ else
     <a href="index.php?seite=mitarbeiter&sub=uebersicht" <?php if($activ=='uebersicht') echo 'class="subactiv"'?>>&Uuml;bersicht</a> |
     <a href="index.php?seite=mitarbeiter&sub=details" <?php if($activ=='details') echo 'class="subactiv"'?>>Benutzer</a> |
 <?php
-    if($_SESSION['mitarbeiter']->recht=='1')
+    if($_SESSION['mitarbeiter']->role=='1')
     {
 ?>
      
@@ -38,7 +38,7 @@ if(isset($_GET['action']) && $_GET['action']=='a')
 
     $mitarbeiter = $mitarbeiter->hole_mitarbeiter_durch_id($mid);
 
-    if($mitarbeiter->aktiv>0)
+    if($mitarbeiter->active>0)
     {
 	$aktiv=0;
     }

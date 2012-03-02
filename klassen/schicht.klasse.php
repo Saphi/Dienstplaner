@@ -30,8 +30,8 @@ class Schicht
 	 */
 	public function hole_schicht_durch_id($sid)
 	{
-		$puffer = mysql_query('SELECT * FROM schicht where sid ='.$sid);
-		$schicht_objekt = mysql_fetch_object($puffer, 'Schicht', array('sid', 'bez', 'kbez', 'ab', 'bis'));
+		$puffer = mysql_query('SELECT * FROM shifts where sid ='.$sid);
+		$schicht_objekt = mysql_fetch_object($puffer, 'Schicht', array('sid', 'name', 'nick', 'start', 'end', 'color'));
 		
 		return $schicht_objekt;
 	}
@@ -42,9 +42,9 @@ class Schicht
 	public function hole_alle_schichten()
 	{
 		$schichten_objekt_feld = array();
-		$puffer = mysql_query('SELECT * FROM schicht ORDER BY ab, bis ASC');
+		$puffer = mysql_query('SELECT * FROM shifts ORDER BY start, end ASC');
 		
-		while($schicht_objekt = mysql_fetch_object($puffer, 'Schicht' , array('sid', 'bez', 'kbez', 'ab', 'bis', 'color')))
+		while($schicht_objekt = mysql_fetch_object($puffer, 'Schicht' , array('sid', 'name', 'nick', 'start', 'end', 'color')))
 		{
 			$schichten_objekt_feld[] = $schicht_objekt;
 		}
@@ -54,7 +54,7 @@ class Schicht
         public function hole_alle_schichtfarben()
 	{
 		$schichten_farben_feld = array();
-		$puffer = mysql_query('SELECT color FROM schicht');
+		$puffer = mysql_query('SELECT color FROM shifts');
 		
 		while($schicht_farbe = mysql_fetch_assoc($puffer))
 		{
@@ -71,7 +71,7 @@ class Schicht
 	public function hole_alle_schichten_fuer_kalender()
 	{
 		$schicht_mitarbeiter_kalender_feld = array();
-		$puffer = mysql_query('SELECT * FROM schicht_ma');
+		$puffer = mysql_query('SELECT * FROM shift_must');
 		while($schicht_mitarbeiter_kalender_reihe = mysql_fetch_row($puffer))
 		{
 			$schicht = new Schicht();
@@ -94,7 +94,7 @@ class Schicht
 	 */
 	public function schreibe_schicht($bez, $kbez, $ab, $bis, $color)
 	{
-		mysql_query('INSERT INTO schicht VALUES(" ", "'.$bez.'", "'.$kbez.'", "'.$ab.'", "'.$bis.'", "'.$color.'")');
+		mysql_query('INSERT INTO shifts VALUES(" ", "'.$bez.'", "'.$kbez.'", "'.$ab.'", "'.$bis.'", "'.$color.'")');
 	}
 	
 	/* Erneuert die bereits vorhandene Schicht
@@ -106,7 +106,7 @@ class Schicht
 	 */
 	public function erneuere_schicht($sid, $bez, $kbez, $ab, $bis, $color)
 	{
-		mysql_query("UPDATE schicht SET bez='".$bez."', kbez='".$kbez."', ab='".$ab."', bis='".$bis."', color='".$color."' WHERE sid='".$sid."'");
+		mysql_query("UPDATE shifts SET name='".$bez."', nick='".$kbez."', start='".$ab."', end='".$bis."', color='".$color."' WHERE sid='".$sid."'");
 	}
 	
 	/* L�scht Schicht anhand der �bergebenen Schichtid
@@ -114,7 +114,7 @@ class Schicht
 	 */
 	public function loesche_schicht_durch_id($sid)
 	{
-		mysql_query("DELETE FROM schicht WHERE sid='".$sid."'");
+		mysql_query("DELETE FROM shifts WHERE sid='".$sid."'");
 	}
 }
 ?>

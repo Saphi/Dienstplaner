@@ -78,14 +78,14 @@ foreach($kalender_feld as $woche)
 					if($schluessel%3==0)
 					{
 						$ausgabe_sid = $schicht_mitarbeiter_kalender->sid;
-						$ausgabe =  $schicht_mitarbeiter_kalender->kbez;
+						$ausgabe =  $schicht_mitarbeiter_kalender->nick;
 					}
 					if($schluessel%3==1)
 					{
 						$von = 0;
 						foreach($schicht_mitarbeiter_kalender as $schicht_mitarbeiter)
 						{
-							if(isset($schicht_mitarbeiter) && $schicht_mitarbeiter->termin==$kalender_termin)
+							if(isset($schicht_mitarbeiter) && $schicht_mitarbeiter->date==$kalender_termin)
 							{
 								$von = $von + 1;
 							}

@@ -35,7 +35,7 @@ if($_SESSION['mitarbeiter'])
 <?php
 					/* Variable $recht auf 1 setzen ,wenn Mitarbeiter Administratorrechte hat, ansonsten auf 0 setzen.
 					 */
-					if($_SESSION['mitarbeiter']->recht=='1')
+					if($_SESSION['mitarbeiter']->role=='1')
 					{
 						$recht = 'Admin';
 					}
@@ -43,7 +43,7 @@ if($_SESSION['mitarbeiter'])
 					{
 						$recht = 'Mitarbeiter';
 					}
-            		echo $_SESSION['mitarbeiter']->name.' '.$_SESSION['mitarbeiter']->vname.' ('.$recht.') &nbsp;&nbsp;|&nbsp;&nbsp; ';
+            		echo $_SESSION['mitarbeiter']->first_name.' '.$_SESSION['mitarbeiter']->last_name.' ('.$recht.') &nbsp;&nbsp;|&nbsp;&nbsp; ';
             		echo '<a href="abmelden.php">abmelden</a>';
 
 if(isset($_GET['seite']))
@@ -69,7 +69,7 @@ else
 <?php
 /* Nur anzeigen, wenn Mitarbeiter Administratorrechte hat
  */
-if($_SESSION['mitarbeiter']->recht=='1')
+if($_SESSION['mitarbeiter']->role=='1')
 {
 ?>
     <a href="index.php?seite=konfig" id="menu_schicht" class="menu_objekt <?php if($mainactiv=='konfig') echo 'konfig_active'; ?>"><div class="menu_text" id="menu_text_schicht"> </div></a>

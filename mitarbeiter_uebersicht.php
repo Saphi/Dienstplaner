@@ -32,11 +32,11 @@ else
 			{
 				echo '<tr class="hr"><td colspan=7><hr></td></tr>';
                                 echo '	<tr>';
-				if($mitarbeiter->aktiv=='1')
+				if($mitarbeiter->active=='1')
 				{
-                                    if($_SESSION['mitarbeiter']->recht=='1')
+                                    if($_SESSION['mitarbeiter']->role=='1')
                                     {
-                                        echo '<td> <a href="index.php?seite=mitarbeiter&action=a&mid='.$mitarbeiter->mid.'" class="ma_aktiv"> </a> </td>';
+                                        echo '<td> <a href="index.php?seite=mitarbeiter&action=a&mid='.$mitarbeiter->eid.'" class="ma_aktiv"> </a> </td>';
                                     }
                                     else
                                     {
@@ -45,19 +45,19 @@ else
 				}
 				else
 				{
-                                    if($_SESSION['mitarbeiter']->recht=='1')
+                                    if($_SESSION['mitarbeiter']->role=='1')
                                     {
-                                        echo '<td> <a href="index.php?seite=mitarbeiter&action=a&mid='.$mitarbeiter->mid.'" class="ma_inaktiv"> </a> </td>';
+                                        echo '<td> <a href="index.php?seite=mitarbeiter&action=a&mid='.$mitarbeiter->eid.'" class="ma_inaktiv"> </a> </td>';
                                     }
                                     else
                                     {
                                         echo '		<td class="ma_inaktiv"></td>';
                                     }
 				}
-				echo '		<td>'.$mitarbeiter->name.', '.$mitarbeiter->vname.'</td>';
+				echo '		<td>'.$mitarbeiter->last_name.', '.$mitarbeiter->first_name.'</td>';
 				echo '		<td> x </td>';
                                 echo '		<td> x </td>';
-				if($mitarbeiter->recht=='1')
+				if($mitarbeiter->role=='1')
 				{
 					echo '		<td>Admin</td>';
 				}
@@ -78,14 +78,14 @@ else
 				}
                                  
                                  */
-                                echo '<a href="index.php?seite=mitarbeiter&sub=details&mid='.$mitarbeiter->mid.'">Details</a>';
-                                if($_SESSION['mitarbeiter']->mid == $mitarbeiter->mid || $_SESSION['mitarbeiter']->recht=='1')
+                                echo '<a href="index.php?seite=mitarbeiter&sub=details&mid='.$mitarbeiter->eid.'">Details</a>';
+                                if($_SESSION['mitarbeiter']->eid == $mitarbeiter->eid || $_SESSION['mitarbeiter']->role=='1')
                                 {
-					echo ' | <a href="index.php?seite=mitarbeiter&sub=bearbeiten&mid='.$mitarbeiter->mid.'">Bearbeiten</a>';
+					echo ' | <a href="index.php?seite=mitarbeiter&sub=bearbeiten&mid='.$mitarbeiter->eid.'">Bearbeiten</a>';
 				}
-                                if($_SESSION['mitarbeiter']->recht=='1')
+                                if($_SESSION['mitarbeiter']->role=='1')
 				{
-					echo ' | <a href="index.php?seite=mitarbeiter&action=l&mid='.$mitarbeiter->mid.'" onclick="return confirm(\'Wollen Sie den Mitarbeiter und dessen Schichtzuweisungen wirklich löschen?\')">L&ouml;schen</a>';
+					echo ' | <a href="index.php?seite=mitarbeiter&action=l&mid='.$mitarbeiter->eid.'" onclick="return confirm(\'Wollen Sie den Mitarbeiter und dessen Schichtzuweisungen wirklich löschen?\')">L&ouml;schen</a>';
 				}
 				else
 				{

@@ -98,18 +98,18 @@ $schichtlegende = new Schicht();
     			{
                            
          			echo '<tr>';
-         			echo '<td class="name">'.$ma->name.', '.$ma->vname.'</td>';
+         			echo '<td class="name">'.$ma->last_name.', '.$ma->first_name.'</td>';
 
          			foreach($termine_sql  as $termine)
     	    			{
-	         			$dienstplan = $dienstplan_anzeige->hole_dienst_durch_termine_mid($termine, $ma->mid);
+	         			$dienstplan = $dienstplan_anzeige->hole_dienst_durch_termine_mid($termine, $ma->eid);
 
 	         			
-                         !empty($dienstplan->termin) ? $dienstplan_termin = $dienstplan->termin : $dienstplan_termin = ''; 
+                         !empty($dienstplan->date) ? $dienstplan_termin = $dienstplan->date : $dienstplan_termin = ''; 
                                         
                          if($termine ==  $dienstplan_termin) //wenn Schicht eingetragen
 	                    {
-	                         echo '<td class="schicht" style="background-color:#'.$dienstplan->color.';">'.$dienstplan->kbez.'</td>';
+	                         echo '<td class="schicht" style="background-color:#'.$dienstplan->color.';">'.$dienstplan->nick.'</td>';
                          }
                          else
                          {
@@ -129,14 +129,14 @@ $schichtlegende = new Schicht();
 
     			foreach($schichten_sql as $schichten)   //Inhalt Legende
     			{
-          		$temp = explode(":", $schichten->ab);
+          		$temp = explode(":", $schichten->start);
 				$zeitab = mktime($temp[0], $temp[1], $temp[2], 0, 0, 0);
-          		$temp = explode(":", $schichten->bis);
+          		$temp = explode(":", $schichten->end);
 				$zeitbis = mktime($temp[0], $temp[1], $temp[2], 0, 0, 0);
           		$ab = date("H:i" , $zeitab);
           		$bis = date("H:i" , $zeitbis);
           		echo '<tr><td><div class="farbquad" style="background-color:#'.$schichten->color.'; float:left;"></div>&nbsp;
-                            '.$schichten->kbez.' - '.$schichten->bez.' ('.$ab.' - '.$bis.')</td></tr>';
+                            '.$schichten->nick.' - '.$schichten->name.' ('.$ab.' - '.$bis.')</td></tr>';
     			}
 
     			echo '</table>';

@@ -10,7 +10,7 @@ $schicht->loesche_schicht_durch_id($sid);
 $schicht_mitarbeiter = new Schicht_Mitarbeiter();
 $schicht_mitarbeiter->loesche_alle_schicht_mitarbeiter_durch_sid($sid);
 
-mysql_query("DELETE FROM schicht_ma WHERE SID='".$sid."'");
+mysql_query("DELETE FROM shift_must WHERE sid='".$sid."'");
 }
 
 /* alle Schichtdaten holen */
@@ -31,17 +31,17 @@ $schichten_array = $schichten->hole_alle_schichten();
 
 			foreach($schichten_array as $schicht)    // Tabelleninhalt
 			{
-                                $temp = explode(":", $schicht->ab);
+                                $temp = explode(":", $schicht->start);
                                 $zeitab = mktime($temp[0], $temp[1], $temp[2], 0, 0, 0);
-                                $temp = explode(":", $schicht->bis);
+                                $temp = explode(":", $schicht->end);
 				$zeitbis = mktime($temp[0], $temp[1], $temp[2], 0, 0, 0);
                                 $ab = date("H:i" , $zeitab);
                                 $bis = date("H:i" , $zeitbis);
 				echo '<tr class="hr"><td colspan=7><hr></td></tr>';
                                 echo '	<tr>';
                                 echo '		<td><div class="farbquad" style="background-color:#'.$schicht->color.';"></div></td>';
-				echo '		<td>'.$schicht->bez.'</td>';
-				echo '		<td>'.$schicht->kbez.'</td>';
+				echo '		<td>'.$schicht->name.'</td>';
+				echo '		<td>'.$schicht->nick.'</td>';
 				echo '		<td>'.$ab.'</td>';
 				echo '		<td>'.$bis.'</td>';
 				echo '		<td style="text-align:right;"><a href="index.php?seite=konfig&sub=bearbeiten&sid='.$schicht->sid.'">Bearbeiten</a> ';

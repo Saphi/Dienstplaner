@@ -17,7 +17,7 @@
 <?php
 					/* Variable $recht auf 1 setzen ,wenn Mitarbeiter Administratorrechte hat, ansonsten auf 0 setzen.
 					 */
-					if($_SESSION['mitarbeiter']->recht=='1')
+					if($_SESSION['mitarbeiter']->role=='1')
 					{
 						$recht = 'Admin';
 					}
@@ -25,7 +25,7 @@
 					{
 						$recht = 'Mitarbeiter';
 					}
-            		echo $_SESSION['mitarbeiter']->name.' '.$_SESSION['mitarbeiter']->vname.' ('.$recht.') &nbsp;&nbsp;|&nbsp;&nbsp; ';
+            		echo $_SESSION['mitarbeiter']->last_name.' '.$_SESSION['mitarbeiter']->first_name.' ('.$recht.') &nbsp;&nbsp;|&nbsp;&nbsp; ';
             		echo '<a href="abmelden.php">abmelden</a>';
                         
                       
@@ -38,7 +38,7 @@
 <?php
 /* Nur anzeigen, wenn Mitarbeiter Administratorrechte hat
  */
-if($_SESSION['mitarbeiter']->recht=='1')
+if($_SESSION['mitarbeiter']->role=='1')
 {
 ?>
 		            

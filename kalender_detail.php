@@ -33,7 +33,7 @@ $ma_anzahl = $schicht_ma->hole_mitarbeiter_anzahl_durch_id($sid, $tid);
 if(isset($_POST['speichern']))
 {
 	/* prüfen der maximalen Mitarbeiteranzahl */
-	if((count($_POST)-3)>$ma_anzahl['ma'])
+	if((count($_POST)-3)>$ma_anzahl['must'])
 	{
 		$fehler = 'Sie können nicht soviele Mitarbeiter der Schicht hinzufügen!';
 	}
@@ -79,8 +79,8 @@ $schicht_mitarbeiter_feld = $schicht_mitarbeiter->hole_alle_schicht_mitarbeiter_
 
 		<form action="index.php?seite=kalender&sub=detail" method="post">
 <?php
-echo '			<h2>'.$schicht->bez.' am '.$tag.'.'.$monat.'.'.$jahr.'</h2>';
-echo '			<p>Benötigte Mitarbeiter: '.$ma_anzahl['ma'].'</p>';
+echo '			<h2>'.$schicht->name.' am '.$tag.'.'.$monat.'.'.$jahr.'</h2>';
+echo '			<p>Benötigte Mitarbeiter: '.$ma_anzahl['must'].'</p>';
 
 
 if(isset($erfolg))
@@ -100,12 +100,12 @@ if(isset($erfolg))
 	foreach($mitarbeiter_feld as $mitarbeiter)
 	{
 		$urlaub = new Urlaub();
-		$urlaub_feld = $urlaub->hole_urlaub_durch_mid($mitarbeiter->mid);
+		$urlaub_feld = $urlaub->hole_urlaub_durch_mid($mitarbeiter->eid);
 		$test = 0;
 		foreach($schicht_mitarbeiter_feld as $schicht_mitarbeiter)
 		{
           	/* prüfen ob Mitarbeiter zum gewählten Termin Urlaub hat, wenn ja wird er nicht aufgelistet */
-			if($schicht_mitarbeiter->mid==$mitarbeiter->mid && $schicht_mitarbeiter->termin==$termin)
+			if($schicht_mitarbeiter->employees_eid==$mitarbeiter->eid && $schicht_mitarbeiter->date==$termin)
 			{
 				$test = '1';
 			}
@@ -113,12 +113,12 @@ if(isset($erfolg))
                 
 		if($test=='1')
 		{
-                        $schicht_mitarbeiter_smid = $schicht_mitarbeiter->hole_smid_durch_sid_termin_mid($sid, $termin, $mitarbeiter->mid);
+                        $schicht_mitarbeiter_smid = $schicht_mitarbeiter->hole_smid_durch_sid_termin_mid($sid, $termin, $mitarbeiter->eid);
                         
-			echo '<tr><td class="tablerow"><input type="checkbox" name="'.$index.'" value="'.$mitarbeiter->mid.'" style="visibility:hidden;" checked />'.$mitarbeiter->name.', '.$mitarbeiter->vname.'</td>';
-                        if($_SESSION['mitarbeiter']->recht=='1')
+			echo '<tr><td class="tablerow"><input type="checkbox" name="'.$index.'" value="'.$mitarbeiter->eid.'" style="visibility:hidden;" checked />'.$mitarbeiter->last_name.', '.$mitarbeiter->first_name.'</td>';
+                        if($_SESSION['mitarbeiter']->role=='1')
 			 {
-                        echo '<td class="tablerow"> | <a href="index.php?seite=kalender&sub=detail&l='.$schicht_mitarbeiter_smid['smid'].'&sid='.$sid.'&jahr='.$jahr.'&monat='.$monat.'&tag='.$tag.'">entfernen</a></td></tr>';
+                        echo '<td class="tablerow"> | <a href="index.php?seite=kalender&sub=detail&l='.$schicht_mitarbeiter_smid['empShiftid'].'&sid='.$sid.'&jahr='.$jahr.'&monat='.$monat.'&tag='.$tag.'">entfernen</a></td></tr>';
                          }
                          
                              echo '</tr>';
@@ -126,14 +126,14 @@ if(isset($erfolg))
 			
 		}else
                 {
-                    echo "blubb";
+                    echo ".";
                 }
 			
 		$index++;
 	}
         
         echo '</table><table id="top_right">';
-        if($_SESSION['mitarbeiter']->recht=='1')
+        if($_SESSION['mitarbeiter']->role=='1')
         {
         echo '	<tr><th colspan="2">Mitarbeiter hinzufügen</th></tr>';
         echo '<tr><td><select name="'.$index.'">';
@@ -145,12 +145,12 @@ if(isset($erfolg))
 		foreach($schicht_mitarbeiter_feld as $schicht_mitarbeiter)
 		{
           	/* pr�fen ob Mitarbeiter zum gew�hlten Termin Urlaub hat, wenn ja wird er nicht aufgelistet */
-			if($schicht_mitarbeiter->mid==$mitarbeiter->mid && $schicht_mitarbeiter->termin==$termin)
+			if($schicht_mitarbeiter->employees_eid==$mitarbeiter->eid && $schicht_mitarbeiter->date==$termin)
 			{
 				$test = '1';
 				foreach($urlaub_feld as $urlaub_objekt)
 				{
-					if($schicht_mitarbeiter->termin>$urlaub_objekt->ab && $schicht_mitarbeiter->termin<$urlaub_objekt->bis)
+					if($schicht_mitarbeiter->date>$urlaub_objekt->start && $schicht_mitarbeiter->date<$urlaub_objekt->end)
 					{
 						$test='2';
 					}
@@ -160,7 +160,7 @@ if(isset($erfolg))
                 
 		if($test=='0')
 		{
-                    echo '<option value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.'</option>';
+                    echo '<option value="'.$mitarbeiter->eid.'">'.$mitarbeiter->last_name.', '.$mitarbeiter->first_name.'</option>';
 		}
                 
 		$index++;

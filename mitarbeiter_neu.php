@@ -41,8 +41,10 @@ if(isset($_POST['speichern']))
                 
                 $adresse = '';
                 if(!empty($_POST['adresse'])) $adresse = $_POST['adresse'];
+                $city = '';
+                if(!empty($_POST['city'])) $city = $_POST['city'];
                 
-		$mitarbeiter->schreibe_mitarbeiter($_POST['name'], $_POST['vname'], $adresse, $_POST['tel'], $_POST['email'], $_POST['max_h_d'], $_POST['max_h_w'], $_POST['max_h_m'], $_POST['max_u'], $_POST['recht'], $pw);
+		$mitarbeiter->schreibe_mitarbeiter($_POST['name'], $_POST['vname'], $adresse, $city, $_POST['tel'], $_POST['email'], $_POST['max_h_d'], $_POST['max_h_w'], $_POST['max_u'], $_POST['recht'], $pw);
 		$erfolg = 'Neuer Mitarbeiter erfolgreich erstellt.<br>Damit der Mitarbeiter sich anmelden kann muss er noch aktiviert werden.';
 	}
 }
@@ -83,7 +85,7 @@ else
                 </tr>
                 <tr>
                 	<td class="beschriftung"<?php if(isset($fehler['pw'])) echo 'style="color:red;"'; ?>>* Passwort</td>
-<?php                   if($_SESSION['mitarbeiter']->recht=='1')
+<?php                   if($_SESSION['mitarbeiter']->role=='1')
 			 {
 			     	echo '<td class="beschriftung">Admin</td>';
                          }
@@ -98,7 +100,7 @@ else
                         <td><input class="feld" type="password" size="25" name="pw" value="<?php if(isset($_POST['pw'])) echo $_POST['pw']; ?>"></td>
 <?php
 			/* nur Administrator, darf Recht, Arbeitsstunden und Urlaub bearbeiten */
-                if($_SESSION['mitarbeiter']->recht=='1')
+                if($_SESSION['mitarbeiter']->role=='1')
 			 {
 
                                 echo '<td>';
@@ -129,8 +131,8 @@ else
                     <td class="beschriftung">PLZ, Ort</td>
                 </tr>
                 <tr>
-                    <td><input class="feld" type="Text" size="25" name="strasse" value="<?php if(isset($_POST['adresse'])) echo $_POST['adresse']; ?>"></td>
-                    <td><input class="feld" type="Text" size="25" name="plz" value="<?php if(isset($_POST['adresse'])) echo $_POST['adresse']; ?>"></td>
+                    <td><input class="feld" type="Text" size="25" name="adresse" value="<?php if(isset($_POST['adresse'])) echo $_POST['adresse']; ?>"></td>
+                    <td><input class="feld" type="Text" size="25" name="city" value="<?php if(isset($_POST['city'])) echo $_POST['city']; ?>"></td>
                 </tr>
 		<tr>
                     <td class="beschriftung"<?php if(isset($fehler['email'])) echo 'style="color:red;"'; ?>>* E-Mail</td>
@@ -143,7 +145,7 @@ else
 
 <?php
 			/* nur Administrator, darf Recht, Arbeitsstunden und Urlaub bearbeiten */
-                if($_SESSION['mitarbeiter']->recht=='1')
+                if($_SESSION['mitarbeiter']->role=='1')
 			 {
 
 ?>
@@ -157,12 +159,10 @@ else
                 <tr>
                     <td class="beschriftung">Tag</td>
                     <td class="beschriftung">Woche</td>
-                    <td class="beschriftung">Monat</td>
                 </tr>
 		<tr>
                     <td><input class="feld" type="Text" size="5" name="max_h_d" value="<?php if(isset($_POST['max_h_d'])) echo $_POST['max_h_d']; ?>"></td>
                     <td><input class="feld" type="Text" size="5" name="max_h_w" value="<?php if(isset($_POST['max_h_w'])) echo $_POST['max_h_w']; ?>"></td>
-                    <td><input class="feld" type="Text" size="5" name="max_h_m" value="<?php if(isset($_POST['max_h_m'])) echo $_POST['max_h_m']; ?>"></td>
                 </tr>
 
 	</table>
