@@ -80,7 +80,11 @@ $schicht_mitarbeiter_feld = $schicht_mitarbeiter->hole_alle_schicht_mitarbeiter_
 		<form action="index.php?seite=kalender&sub=detail" method="post">
 <?php
 echo '			<h2>'.$schicht->bez.' am '.$tag.'.'.$monat.'.'.$jahr.'</h2>';
+<<<<<<< HEAD
 echo '			<p>Benötigte Mitarbeiter: '.$ma_anzahl['ma'].'</p>';
+=======
+echo '			<p>Ben&ouml;tigte Mitarbeiter: '.$ma_anzahl['ma'].'</p>';
+>>>>>>> upstream/project
 
 
 if(isset($erfolg))
@@ -114,7 +118,11 @@ if(isset($erfolg))
 		if($test=='1')
 		{
                         $schicht_mitarbeiter_smid = $schicht_mitarbeiter->hole_smid_durch_sid_termin_mid($sid, $termin, $mitarbeiter->mid);
+<<<<<<< HEAD
                         
+=======
+		
+>>>>>>> upstream/project
 			echo '<tr><td class="tablerow"><input type="checkbox" name="'.$index.'" value="'.$mitarbeiter->mid.'" style="visibility:hidden;" checked />'.$mitarbeiter->name.', '.$mitarbeiter->vname.'</td>';
                         if($_SESSION['mitarbeiter']->recht=='1')
 			 {
@@ -135,7 +143,11 @@ if(isset($erfolg))
         echo '</table><table id="top_right">';
         if($_SESSION['mitarbeiter']->recht=='1')
         {
+<<<<<<< HEAD
         echo '	<tr><th colspan="2">Mitarbeiter hinzufügen</th></tr>';
+=======
+        echo '	<tr><th colspan="2">Mitarbeiter hinzuf&uuml;gen</th></tr>';
+>>>>>>> upstream/project
         echo '<tr><td><select name="'.$index.'">';
         foreach($mitarbeiter_feld as $mitarbeiter)
 	{

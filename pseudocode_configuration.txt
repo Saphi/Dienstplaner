@@ -1,0 +1,91 @@
+/**
+*   Normierung für Pseudocode angeben!
+*   
+*   input: Eingabe eines Wertes durch Anwender oder durch Auslesen einer Datenbank
+*   output: Ausgabe eines Wertes im Fenster
+*   exit: Programm wird beendet
+*/
+
+/**
+*   shift_configuration
+*/
+// Defintion der Struktur eines Datums
+struct Date_struct
+    int day;
+    int month;
+    int year;
+end;
+
+// Variablen, die vorher durch Anwender eingegeben wurden
+string shift_nick = input;
+string shift_color = input;
+int shift_must = input;
+string off_time_text = input;
+string on_time_text = input;
+
+int shift_have = 0;
+string day_color = "#797a7b";  // Farbe des Kalendereintrags (grau --> geschlossen)
+
+int n = input;  // n+1 = Anzahl der Tage des Monats(n = 27/28/29/30)
+dates_month_recent = new array[n];  // Array mit allen Tagen des aktuell angezeigten Monats
+
+//  Schleife geht alle Elemente im Array durch bis n = 0
+for n in n..0
+    // wenn Array alle, dann Programmdurchlauf beenden
+    if n == 0
+        exit;
+    else
+        Date_struct date = dates_month_recent[n];
+
+        Date_struct date_db = input;    // Eintrag in Spalte date in shift_coverage
+        int date_shift_must = input; // Eintrag für jeweiliges Datum in shift_coverage
+        int date_day_id = input; // Eintrag für jeweiliges Datum
+
+        // gibt es Datenbankeintrag in Spalte date in shift_coverage für date aus array?
+        if date == date_db and date_shift_must != 0
+
+            output shift_nick;
+            output date_shift_must;
+            output shift_have;
+
+        end if;
+        // hat Datum eine day_id?
+        if date_day_id == 0
+                
+            output day_color;
+
+        else    
+            Date_struct date_db1 = input;    // Eintrag in Spalte date in spec_times_business
+            int on = input;
+
+            if date == date_db1
+                // wenn geschlossen, tag grau hinterlegen; wenn geöffnet Tag mit weiss hinterlegen
+                if on == 0
+                    output off_time_text;
+                    output day_color;
+                else
+                    day_color = "#ffffff";
+                    shift_must = 0;
+                    output on_time_text;
+                    output shift_must;
+                    output shift_have;
+                    output day_color;
+                end if;
+
+            else
+
+                day_color = "#ffffff";
+                shift_must = 0;
+                output shift_nick;
+                output shift_must;
+                output shift_have;
+                output day_color;
+
+            end if;
+
+        end if;
+
+    end if;
+
+end for;
+    
