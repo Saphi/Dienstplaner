@@ -1,0 +1,176 @@
+/**
+*   shifts
+*/
+// Defintion der Struktur eines Datums
+struct Date
+    int day;
+    int month;
+    int year;
+end;
+
+// Defintion der Struktur einer Zeitangabe
+struct Time
+    int hour;
+    int minute;
+end;
+
+// Variablen, die vorher durch Anwender eingegeben wurden
+string weekday = input;
+
+
+// übergeben wird array mit allen dienstplanzeiträumen
+array procedure shifts (plan_to_create)
+    
+    date = new Date;
+    all_dates = new array[];
+    int i = input;  // Menge aller elemente des arrays plan_to_create, dh alle dienstplanzeiträume
+
+    for i in 0..i
+
+        all dates = get_days_inbetween(plan_to_create[i][0], plan_to_create[i][1]); // enthält alle Tage zwischen anfangs- und enddatum von dienstplanzeitraum
+        int j = 0;
+
+        string date_weekday = input;    // Wochentag von all_dates[i]
+        int weekday_id = get_weekday_id(date_weekday);
+        int day_id = input; // Datenbanktabellen eintrag (id) zu date_weekday, 0 = Sonntag, 1 = Montag,..., 6 = Samstag
+
+        while all_dates[j] != plan_to_create[i][1]
+
+            if day_id != weekday_id // gibt es eintrag?
+
+                plan_to_create[i][all_dates[j]]["on"] = 0;
+                j = j + 1;
+
+            else
+                
+                int spec_bus_on = input; // Eintrag in Datenbanktabelle spec_times_business zu all_dates[j]
+
+                if spec_bus_on == 0 // gibt es eintrag?
+
+                    plan_to_create[i][all_dates[j]]["on"] = 0;
+                    j = j + 1;
+
+                else
+
+                    int shift_must = input; // Eintrag aus Datenbank shift_must für geprüftes date
+                    string shift_nick = input;  // Eintrag aus Datenbank Kürzel für shift für geprüftes date
+
+                    plan_to_create[i][all_dates[j]]["on"] = 1;
+                    
+                    if shift_nick == 0  // kein eintrag
+                        
+                        j = j + 1;
+
+                    else
+                    
+                        plan_to_create[i][all_dates[j]][shift_nick]["shift_must"] = shift_must;
+                        plan_to_create[i][all_dates[j]][shift_nick]["shift_have"] = 0;
+
+                    end if;
+
+                end if;
+
+            end if;    
+
+        end while;
+
+    end for;
+
+    return plan_to_create;
+
+end
+
+
+int procedure get_weekday_id(weekday)
+
+    int weekday_id = 0;
+
+    if weekday == "Montag"
+        weekday_id = 1;
+    elseif weekday == "Dienstag"
+        weekday_id = 2;
+    elseif weekday == "Mittwoch"
+        weekday_id = 3;
+    elseif weekday == "Donnerstag"
+        weekday = 4;
+    elseif weekday == "Freitag"
+        weekday_id = 5;
+    elseif weekday == "Samstag"
+        weekday_id = 6;
+    elseif weekday == "Sonntag"
+        weekday_id = 0;
+    endif;
+
+    return weekday_id;
+    
+end
+
+// Ermittlung aller Tage (Datum) zwischen einem start- und enddatum
+array procedure get_days_inbetween(start_date, end_date)
+    
+    days_inbetween = new array[];   // array mit allen Daten
+    days_inbetween[0] = start_date;
+    int i = 1;
+    date = new Date;
+    date = start_date;
+
+    while date != end_date
+
+        date.day = date.day + 1;
+        if date.day > get_day(date.month, date.year)
+            date.month = (date.month + 1)%12;
+        else
+            date.month = date.month;
+        end if;
+        if date.month == 1 and date.day == 1
+            date.year = date.year + 1;
+        else
+            date.year = date.year;
+        end if;
+
+        days_inbetween[i] = date;
+        i = i + 1;
+
+    end while;
+
+    return days_inbetween;  // Rückgabewert ist array mit allen daten zwischen start- und enddatum
+end
+
+
+// Funktion zur Ermittlung der Endtage zum übergebenen Monat
+int procedure get_day(month, year)
+
+    int day = 0;
+
+    if month == 1 oder month == 3 oder month == 5 oder month == 7 oder month == 8 oder month == 10 oder month == 12
+
+        day = 31;
+
+    elseif month == 4 oder month == 6 oder month == 9 oder month == 11
+
+        day = 30;
+
+    elseif month == 2
+
+        if year%4 == 0
+
+            day = 29;
+
+        else
+
+            day = 28;
+
+        end if;
+
+    end if;
+
+    return day;
+
+end
+
+
+
+
+
+
+shifts(plan_to_create); // Aufruf
