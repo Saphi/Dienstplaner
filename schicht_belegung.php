@@ -4,12 +4,17 @@ $sql_s = ("SELECT * FROM shifts");
 $query = mysql_query($sql_s);
 $sql_t = ("SELECT * FROM day");
 $schicht_ma_sql = mysql_query($sql_t);
+<<<<<<< HEAD
 
 $s = '';
 if(!empty($_GET['s'])) $s = $_GET['s']; 
 
 /* nach Bestätigung aller Angaben */
 if($s=='speichern')
+=======
+/* nach Best�tigung aller Angaben */
+if($_GET['s']=='speichern')
+>>>>>>> upstream/project
 {
 	/* leeren der Tabellen schicht_ma und tag */
 	$leeren = mysql_query("TRUNCATE TABLE shift_must");
