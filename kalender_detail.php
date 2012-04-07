@@ -89,6 +89,9 @@ echo '			<p>Benötigte Mitarbeiter: '.$ma_anzahl['ma'].'</p>';
 =======
 echo '			<p>Ben&ouml;tigte Mitarbeiter: '.$ma_anzahl['ma'].'</p>';
 >>>>>>> upstream/project
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 
 

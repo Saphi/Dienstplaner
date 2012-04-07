@@ -117,6 +117,9 @@ $schichtlegende = new Schicht();
 =======
 	         			$dienstplan = $dienstplan_anzeige->hole_dienst_durch_termine_mid($termine, $ma->mid);
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 
 	         			
