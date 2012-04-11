@@ -2,11 +2,8 @@
 <?php
 $schicht_neu = new Schicht();
 $schichtfarben = $schicht_neu->hole_alle_schichtfarben();
-<<<<<<< HEAD
 
 empty($_POST['color']) ? $color = '' : $color = $_POST['color'];
-=======
->>>>>>> upstream/project
 
 /* Funktion f�r Fehler�berpr�fung */
 function testen()
@@ -47,11 +44,7 @@ if(isset($_POST['speichern']))
 	if(count($fehler)=='0')
 	{
 		$schicht = new Schicht();
-<<<<<<< HEAD
 		$schicht->schreibe_schicht($_POST['bez'], $_POST['kbez'], $_POST['ab'], $_POST['bis'], $color);
-=======
-		$schicht->schreibe_schicht($_POST['bez'], $_POST['kbez'], $_POST['ab'], $_POST['bis'], $_POST['color']);
->>>>>>> upstream/project
 		$erfolg = 'Neue Schicht erfolgreich erstellt.';
 	}
 }
@@ -67,11 +60,7 @@ if(isset($_GET['c'])){
     $color=$_GET['c'];
 }
 else{
-<<<<<<< HEAD
     $color = $color;
-=======
-    $color=$_POST['color'];
->>>>>>> upstream/project
 }
 
 if(isset($erfolg))
@@ -95,24 +84,6 @@ else
 	  </table>
              <table id="top_left" style="border:none;">
 		        
-<<<<<<< HEAD
-                <tr>
-                    <td class="beschriftung"<?php if(isset($fehler['bez'])) echo 'style="color:red;"'; ?>>Bezeichnung</td>
-                    <td class="beschriftung"<?php if(isset($fehler['kbez'])) echo 'style="color:red;"'; ?>>Kurzbezeichnung</td>
-                </tr>
-                <tr>
-                    <td><input class="feld" type="Text" size="26" name="bez" value="<?php if(isset($_POST['bez'])) echo $_POST['bez']; ?>"></td>
-                    <td><input class="feld" type="Text" size="26" name="kbez" value="<?php if(isset($_POST['kbez'])) echo $_POST['kbez']; ?>"></td>
-                </tr>
-                <tr>
-                    <td class="beschriftung"<?php if(isset($fehler['ab'])) echo 'style="color:red;"'; ?>>Startzeit</td>
-                    <td class="beschriftung"<?php if(isset($fehler['bis'])) echo 'style="color:red;"'; ?>>Endzeit</td>
-                </tr>
-                <tr>
-                    
-                    <td><input class="feld" type="Text" size="26" name="ab" value="<?php if(isset($_POST['ab'])) echo $_POST['ab']; ?>"></td>
-                    <td><input class="feld" type="Text" size="26" name="bis" value="<?php if(isset($_POST['bis'])) echo $_POST['bis']; ?>"></td>
-=======
                 <tr>
                     <td class="beschriftung"<?php if(isset($fehler['bez'])) echo 'style="color:red;"'; ?>>Bezeichnung</td>
                     <td class="beschriftung"<?php if(isset($fehler['kbez'])) echo 'style="color:red;"'; ?>>Kurzbezeichnung</td>
@@ -132,21 +103,11 @@ else
                 </tr>
                 <tr>
                     <td colspan="2"><input class="knopf_speichern" name="speichern" type="submit" value=" "></td>
->>>>>>> upstream/project
                 </tr>
             </table>
            
             <table id="top_right" >
                 <tr>
-<<<<<<< HEAD
-                    <td colspan="2"><input class="knopf_speichern" name="speichern" type="submit" value=" "></td>
-                </tr>
-            </table>
-           
-            <table id="top_right" >
-                <tr>
-=======
->>>>>>> upstream/project
                     <td class="beschriftung" colspan="2">Farbe</td>
                 </tr>
                 <tr>

@@ -11,10 +11,7 @@ include('klassen/schicht.klasse.php');
 $mitarbeiter = new Mitarbeiter();
 $dienstplan_anzeige = new Dienstplan();
 $schichtlegende = new Schicht();
-<<<<<<< HEAD
 
-=======
->>>>>>> upstream/project
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -42,7 +39,6 @@ $schichtlegende = new Schicht();
      		$ende = $zw[2].'.'.$zw[1].'.'.$zw[0]; //Datumsformat Enddatum in TT.MM.JJJJ
                          * 
                          */
-<<<<<<< HEAD
                 $today = date("d.m.Y");
                 $zw1 = explode(".",$_POST['von']);
                 $zw2 = explode(".",$_POST['bis']);
@@ -62,12 +58,6 @@ $schichtlegende = new Schicht();
                 {
                     $ende = $today;
                 }    
-=======
-                        $zw = explode(".",$_POST['von']);
-     		$start = $zw[2].'-'.$zw[1].'-'.$zw[0]; //Datumsformat Startdatum in TT.MM.JJJJ
-     		$zw = explode(".",$_POST['bis']);
-     		$ende = $zw[2].'-'.$zw[1].'-'.$zw[0]; //Datumsformat Enddatum in TT.MM.JJJJ
->>>>>>> upstream/project
 
                echo '<div class="logo"></div>';
     			echo '<span class="headline">Dienstplan von <b>'.$_POST['von'].'</b> bis <b>'.$_POST['bis'].'</b></span>';
@@ -112,26 +102,12 @@ $schichtlegende = new Schicht();
 
          			foreach($termine_sql  as $termine)
     	    			{
-<<<<<<< HEAD
 	         			$dienstplan = $dienstplan_anzeige->hole_dienst_durch_termine_mid($termine, $ma->eid);
-=======
-	         			$dienstplan = $dienstplan_anzeige->hole_dienst_durch_termine_mid($termine, $ma->mid);
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
->>>>>>> upstream/master
 
 	         			
                          !empty($dienstplan->date) ? $dienstplan_termin = $dienstplan->date : $dienstplan_termin = ''; 
                                         
                          if($termine ==  $dienstplan_termin) //wenn Schicht eingetragen
-=======
-
-	         			
-
-                         if($termine ==  $dienstplan->termin) //wenn Schicht eingetragen
->>>>>>> upstream/project
 	                    {
 	                         echo '<td class="schicht" style="background-color:#'.$dienstplan->color.';">'.$dienstplan->nick.'</td>';
                          }

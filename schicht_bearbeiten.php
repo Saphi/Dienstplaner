@@ -3,15 +3,7 @@
 
 $sid = '';
 
-<<<<<<< HEAD
 if(!empty($_POST['sid'])) $sid = $_POST['sid'];
-=======
-    $sid = $_POST['sid'];
-
-if($sid==''){
-    $sid = $_GET['sid'];
-}
->>>>>>> upstream/project
 
 if($sid==''){
     if(!empty($_GET['sid'])) $sid = $_GET['sid'];
