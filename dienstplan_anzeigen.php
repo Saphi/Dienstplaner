@@ -4,9 +4,9 @@ session_start();
 if($_SESSION['mitarbeiter'])
 {
 include('inc/config.php');
+include('dienstplaner_automatic.php');
 /* Mitarbeiterklasse einbinden */
 include('klassen/mitarbeiter.klasse.php');
-include('klassen/dienstplan.klasse.php');
 include('klassen/schicht.klasse.php');
 $mitarbeiter = new Mitarbeiter();
 $dienstplan_anzeige = new Dienstplan();
@@ -24,12 +24,38 @@ $schichtlegende = new Schicht();
 		
         	<div id="dienstplan">
 <?php
-			function wochentag($var) //Wochentag durch Datum ermitteln
+			function wochentag($date) //Wochentag durch Datum ermitteln
                         {
-                                $temp = explode("-", $var);
-				$datum = mktime(0, 0, 0, $temp[1], $temp[2], $temp[0]);
-				$wochentag=array("So", "Mo", "Di", "Mi", "Do", "Fr", "Sa");
-				return $wochentag[date("w", $datum)];
+                                $date = explode(".", $date);
+                                $weekday = mktime(0,0,0,$date[1],$date[0],$date[2]);
+                                $day = date('w',$weekday);
+
+                                switch($day)
+                                {
+                                    case 0:
+                                        $day = "So";
+                                        break;
+                                    case 1:
+                                        $day = "Mo";
+                                        break;
+                                    case 2:
+                                        $day = "Di";
+                                        break;
+                                    case 3:
+                                        $day = "Mi";
+                                        break;
+                                    case 4:
+                                        $day = "Do";
+                                        break;
+                                    case 5:
+                                        $day = "Fr";
+                                        break;
+                                    case 6:
+                                        $day = "Sa";
+                                        break;
+                                }
+
+                                return $day;
 			}
 
                         /*
@@ -40,8 +66,8 @@ $schichtlegende = new Schicht();
                          * 
                          */
                 $today = date("d.m.Y");
-                $zw1 = explode(".",$_POST['von']);
-                $zw2 = explode(".",$_POST['bis']);
+                $zw1 = explode(".",$plan_dates["start"]);
+                $zw2 = explode(".",$plan_dates["end"]);
                 
                 if($zw1[0] != '')
                 {
@@ -60,26 +86,21 @@ $schichtlegende = new Schicht();
                 }    
 
                echo '<div class="logo"></div>';
-    			echo '<span class="headline">Dienstplan von <b>'.$_POST['von'].'</b> bis <b>'.$_POST['bis'].'</b></span>';
+    			echo '<span class="headline">Dienstplan von <b>'.$plan_dates["start"].'</b> bis <b>'.$plan_dates["end"].'</b></span>';
 
-               echo '<a href="index.php?seite=dienstplan">zur&uuml;ck</a><br><br>';
+               echo '<a href="index.php?seite=dienstplan">zur&uuml;ck</a> |';
+                echo '<a href="dienstplan_anzeigen.php" onClick="alert("Der Dienstplan wird neu berechnet. Der aktuell angezeigte Dienstplan verf&auml;llt.");">erneut erzeugen</a><br><br>';
                
                echo '<div id="abschliessen"></div>';
 
                /* wenn Dienstplan f�r alle Mitarbeiter angezeigt werden soll ist anzeige = 1, sonst 0 */
-               if($_POST['anzeige']==1)
-               {
+               
                	/* alle Mitarbeiter holen */
                     $ma_sql = $mitarbeiter->hole_alle_mitarbeiter();
-               }
-               else
-               {
-               	/* nur angemeldeten Benutzer holen */
-                    $ma_sql[] = $mitarbeiter->hole_mitarbeiter_durch_id($_GET['mid']);
-               }
+              
 
                /* alle gespeicherten Termine im ausgew�hlten Bereich holen */
-    			$termine_sql = $dienstplan_anzeige->hole_alle_termine_von_bis($start, $ende);
+    			$termine_sql = get_dates($plan_dates["start"], $plan_dates["end"]);
 
     			echo '<table class="dienstplan">';
     			echo '<tr>';
@@ -87,39 +108,64 @@ $schichtlegende = new Schicht();
 
     			foreach($termine_sql  as $termine)    //Kopfzeile Wochentage
     			{
-                                $zw = explode("-",$termine);
-                                $tag = $zw[2].'.'.$zw[1].'.';
+                                $zw = explode(".",$termine);
+                                $tag = $zw[0].'.'.$zw[1].'.';
     				echo '<th class="dienstplan">'.wochentag($termine).'<br/>'.$tag.'</th>';
     			}
     			
     			echo '</tr>';
+                        
+                         $shifts = $dienstplan_anzeige->get_all_shifts();
+                         $schichten_sql = $schichtlegende->hole_alle_schichten();
+                         $amount_shifts = sizeof($shifts);
 
     			foreach($ma_sql as $ma)   //Mitarbeiterspalte
     			{
                            
          			echo '<tr>';
          			echo '<td class="name">'.$ma->last_name.', '.$ma->first_name.'</td>';
-
+                                
          			foreach($termine_sql  as $termine)
     	    			{
-	         			$dienstplan = $dienstplan_anzeige->hole_dienst_durch_termine_mid($termine, $ma->eid);
+                                    
+                                    $noentry = 0;
+                                    foreach($schichten_sql as $shift)
+                                    {
+                                            
+                                        if(isset($newplan[$termine][$shift->nick]))
+                                        {
+                                          if(in_array($ma->eid,$newplan[$termine][$shift->nick])){
+                                                echo '<td class="schicht" style="background-color:#'.$shift->color.';">'.$shift->nick.'</td>';
+                                                break;
+                                          }
+                                          else
+                                          {
+                                              $noentry++;
+                                              if($noentry == $amount_shifts)
+                                              {
+                                                  echo '<td> </td>';
+                                              }
+                                                
+                                          }
+                                          
+                                        }
+                                        else
+                                        {
+                                            $noentry++;
+                                              if($noentry == $amount_shifts)
+                                              {
+                                                  echo '<td> </td>';
+                                              }
+                                        }
+                                              
+                                         
+                                    }
 
-	         			
-                         !empty($dienstplan->date) ? $dienstplan_termin = $dienstplan->date : $dienstplan_termin = ''; 
-                                        
-                         if($termine ==  $dienstplan_termin) //wenn Schicht eingetragen
-	                    {
-	                         echo '<td class="schicht" style="background-color:#'.$dienstplan->color.';">'.$dienstplan->nick.'</td>';
-                         }
-                         else
-                         {
-                         	echo '<td>&nbsp;</td>';
-                         }
-
-         			}
-         			
-         			echo '</tr>';
-    			}
+                                }
+                                
+                                echo '</tr>';
+                        }
+                   
 
     			echo '</table><br><hr>';
 

@@ -25,7 +25,14 @@ $schicht_mitarbeiter_kalender_feld = $schicht_mitarbeiter_kalender->hole_alle_sc
     <a id="pfeil_links" href="index.php?seite=kalender&sub=uebersicht&monat=<?php echo $vor[0]; ?>&jahr=<?php echo $vor[1]; ?>"></a>
     <span id="kalenderueberschrift"><?php echo $kalender->monats_name[$kalender->monat].' '.$kalender->jahr; ?></span>
     <a id="pfeil_rechts" href="index.php?seite=kalender&sub=uebersicht&monat=<?php echo $nach[0]; ?>&jahr=<?php echo $nach[1]; ?>"></a>
-
+<?php
+    if($_SESSION['mitarbeiter']->role=='1')
+    {
+?>
+    <a href="index.php?seite=kalender&sub=uspec" style="float:right;">Sonderzeiten Unternehmen</a>
+<?php
+    }
+?>
 </div>
 <div id="hauptinhalt_kal">
 		<table>

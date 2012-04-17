@@ -24,7 +24,11 @@ else
 
      |
     <a href="index.php?seite=mitarbeiter&sub=urlaub" <?php if($activ=='urlaub') echo 'class="subactiv"'?>>Urlaub</a>
-
+    |
+    <a href="index.php?seite=mitarbeiter&sub=mspec" <?php if($activ=='mspec') echo 'class="subactiv"'?>>Sonderzeiten</a>
+    |
+    <a href="index.php?seite=mitarbeiter&sub=ausfall" <?php if($activ=='ausfall') echo 'class="subactiv"'?>>Ausfall</a>
+    
 </div>
 
 <?php
@@ -72,6 +76,8 @@ if(isset($_GET['sub']))
             case 'neu': include('mitarbeiter_neu.php'); break;
             case 'bearbeiten': include('mitarbeiter_bearbeiten.php'); break;
             case 'urlaub': include('mitarbeiter_urlaub.php'); break;
+            case 'mspec': include('mitarbeiter_mspec.php'); break;
+            case 'ausfall': include('mitarbeiter_ausfall.php'); break;
 
 	    default: break;
 	}

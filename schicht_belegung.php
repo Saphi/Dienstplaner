@@ -2,7 +2,7 @@
 <?php
 $sql_s = ("SELECT * FROM shifts");
 $query = mysql_query($sql_s);
-$sql_t = ("SELECT * FROM day");
+$sql_t = ("SELECT * FROM days");
 $schicht_ma_sql = mysql_query($sql_t);
 
 $s = '';
