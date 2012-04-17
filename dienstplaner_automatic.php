@@ -130,8 +130,7 @@ function create_plan($start, $end)
 {
     $dienstplan = new Dienstplan();
     $plan = array();
-    echo "Der aktuelle Dienstplan fuer den Zeitraum $start bis $end wird nun erstellt.
-        Bitte haben Sie einen Moment Geduld...";
+    //echo "Der aktuelle Dienstplan fuer den Zeitraum $start bis $end wird nun erstellt. Bitte haben Sie einen Moment Geduld...";
 
     // simulated Database entries
     

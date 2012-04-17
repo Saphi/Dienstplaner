@@ -62,7 +62,7 @@
         
         public function get_emp_ids()
 	{
-                $puffer = mysql_query("SELECT eid FROM employees");
+                $puffer = mysql_query("SELECT eid FROM employees WHERE active = '1' ");
 		while($dienstplan_objekt = mysql_fetch_assoc($puffer))
 		{
                        
